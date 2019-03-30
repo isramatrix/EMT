@@ -7,14 +7,6 @@
     android:orientation="vertical"
     tools:context=".activities.BasicMapActivity">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World"
-        tools:context=".activities.BasicMapActivity">
-    </TextView>
-
 
     <fragment
         class="com.here.android.mpa.mapping.MapFragment"
