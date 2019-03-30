@@ -8,7 +8,6 @@ import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.OnEngineInitListener;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapFragment;
-import com.here.android.mpa.mapping.SupportMapFragment;
 
 public class BasicMapActivity extends Activity {
 
@@ -16,8 +15,6 @@ public class BasicMapActivity extends Activity {
     private Map map = null;
 
     // map fragment embedded in this activity
-    //ayy lmao
-    //ayy
     private MapFragment mapFragment = null;
 
     @Override
