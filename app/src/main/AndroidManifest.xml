@@ -17,7 +17,7 @@
         <meta-data android:name="com.here.android.maps.appid" android:value="S2ttSh2zQfkUg8CytM6z"/>
         <meta-data android:name="com.here.android.maps.apptoken" android:value="fAwh087XRyWu1yp8OzkAdw"/>
 
-        <activity android:name=".BasicMapActivity">
+        <activity android:name=".activities.BasicMapActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
