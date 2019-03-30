@@ -40,10 +40,10 @@
 
        <service
             android:name="com.here.android.mpa.service.MapService"
-            android:label="@+id/mapfragment"
+            android:label="EMTService"
             android:exported="false">
             <intent-filter>
-                <action android:name="@+id/mapfragment">
+                <action android:name="EMTService">
                 </action>
             </intent-filter>
         </service>
