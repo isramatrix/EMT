@@ -35,7 +35,6 @@ public class BasicMapActivity extends Activity {
 
         // Set up disk cache path for the map service for this application
         // It is recommended to use a path under your application folder for storing the disk cache.
-
         boolean success = com.here.android.mpa.common.MapSettings.setIsolatedDiskCacheRootPath(
                 getApplicationContext().getExternalFilesDir(null) + File.separator + ".here-maps",
                 "EMTService");
