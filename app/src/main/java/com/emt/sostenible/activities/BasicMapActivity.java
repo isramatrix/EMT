@@ -32,11 +32,14 @@ public class BasicMapActivity extends Activity {
 
         // Search for the map fragment to finish setup by calling init().
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapfragment);
+
         // Set up disk cache path for the map service for this application
-        // It is recommended to use a path under your application folder for storing the disk cache
+        // It is recommended to use a path under your application folder for storing the disk cache.
+
         boolean success = com.here.android.mpa.common.MapSettings.setIsolatedDiskCacheRootPath(
                 getApplicationContext().getExternalFilesDir(null) + File.separator + ".here-maps",
-                "EMTService"); /* ATTENTION! Do not forget to update {YOUR_INTENT_NAME} */
+                "EMTService");
+
         if (!success) {
             Toast.makeText(getApplicationContext(), "Unable to set isolated disk cache path.",
                     Toast.LENGTH_LONG);
@@ -48,7 +51,7 @@ public class BasicMapActivity extends Activity {
                         // retrieve a reference of the map from the map fragment
                         map = mapFragment.getMap();
                         // Set the map center to the Vancouver region (no animation)
-                        map.setCenter(new GeoCoordinate(49.196261, -123.004773, 0.0),
+                        map.setCenter(new GeoCoordinate(39.4078969, -0.4315509, 0.0),
                                 Map.Animation.NONE);
                         // Set the zoom level to the average between min and max
                         map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 2);
