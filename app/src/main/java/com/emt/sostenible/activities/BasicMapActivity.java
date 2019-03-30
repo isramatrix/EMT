@@ -16,7 +16,8 @@ public class BasicMapActivity extends Activity {
     private Map map = null;
 
     // map fragment embedded in this activity
-    //probando git xd
+    //ayy lmao
+    //ayy
     private MapFragment mapFragment = null;
 
     @Override
