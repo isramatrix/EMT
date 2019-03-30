@@ -8,6 +8,12 @@
     tools:context=".activities.BasicMapActivity">
 
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
     <fragment
         class="com.here.android.mpa.mapping.MapFragment"
         android:id="@+id/mapfragment"

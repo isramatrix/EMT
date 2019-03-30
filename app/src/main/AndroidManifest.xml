@@ -2,10 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.emt.sostenible">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -14,17 +14,40 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="com.here.android.maps.appid" android:value="S2ttSh2zQfkUg8CytM6z"/>
-        <meta-data android:name="com.here.android.maps.apptoken" android:value="fAwh087XRyWu1yp8OzkAdw"/>
+
+        <meta-data
+            android:name="com.here.android.maps.appid"
+            android:value="8siWy3dpvaa2crA2u8Nv" />
+        <meta-data
+            android:name="com.here.android.maps.apptoken"
+            android:value="D5naHsfZ3JTyE19aFSSYYA" />
+
+        <meta-data android:name="com.here.android.maps.license.key"
+            android:value="CSexP/PF6rlbuMZrssjw2FAOo8jvbVEZcb8yrZP5hFCJSYwL/UFcKmDH2lQfGij/iTDIcs1FnyYpYecGH1EsitUnNhUtlnYZy8hFtHBX6WUHIfLwAuNHjR0SCLjAavpiHdVxWrwDFEHYD0V2nU9XEiuh7TMSz0scsOj8uHDYdkYkc1fQyaRXjxJj7TPah8okrJHYrlYSIdon4He1yNAp1mRvVEmuQvq+Aoq0MvjWfhU1qYlDcLt7gOdvCrhLmck9VtC1b01wnaTod0LNQBTb/X/QBEivt47kbZK+TOXWNGlNFrel2DWMZYTbdHMygzsCJIbfk7IK63iW3NJUsbbXDnnAXWCUFC1zDMxeVPyz9pKthqhGrz4wvOdCMz9zep+fOl0Xdpj5CcCchVR+3mM1ndKdR917GV+ru8YuDojEAwFO4kGD80mK4f8ziSnZoj5HNvIWMohf45hLCRAhLGJx2WY49SnfjVAVzMFnaXhQehhkM3zc6vnyEBFfmjjujEtFnPwiWGlRvtJCjrR+ImXO9n7oXwkPvy9QytAlsriGked6PXqkySFo9DNhaZl/QA2u3sUwkIItIljzxd6xniSTRjQzIgsj4GWQ5VgM1v4Ut4FmXLk7yNWc7jdkFPCk6bNWEr1af5d2fvveUfyNVKOEcqDyJ99ZjMQGM2AiE4Eut3g="/>
 
         <activity android:name=".activities.BasicMapActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <activity
+            android:name=".activities.ParamsActivity"
+            android:label="@string/title_activity_params"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+       <service
+            android:name="com.here.android.mpa.service.MapService"
+            android:label="@+id/mapfragment"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="@+id/mapfragment">
+                </action>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

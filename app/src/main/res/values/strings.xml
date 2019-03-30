@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EMT</string>
+    <string name="title_activity_params">ParamsActivity</string>
 </resources>
