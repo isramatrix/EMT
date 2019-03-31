@@ -48,6 +48,10 @@ public class MapController {
                                 Map.Animation.NONE);
                         // Set the zoom level to the average between min and max
                         map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 1.5);
+                        map.setMapScheme(Map.Scheme.NORMAL_DAY);
+
+                        MarkerHandler m = new MarkerHandler(map);
+                        m.initialize();
 
                     } else {
                         System.out.println("ERROR: Cannot initialize Map Fragment");
@@ -76,5 +80,6 @@ public class MapController {
     {
         mapRouting.setOnCalculateRouteFinished(map);
     }
+
 
 }
