@@ -2,74 +2,53 @@ package com.emt.sostenible.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.emt.sostenible.R;
+import com.emt.sostenible.here.MapController;
+import com.emt.sostenible.here.MapGeocoder;
 import com.emt.sostenible.here.MapRouting;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.OnEngineInitListener;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapFragment;
 import com.here.android.mpa.mapping.MapRoute;
+import com.here.android.mpa.search.ErrorCode;
+import com.here.android.mpa.search.GeocodeResult;
+import com.here.android.mpa.search.ResultListener;
 
 import java.io.File;
+import java.util.List;
 
 public class BasicMapActivity extends Activity {
 
-    // map embedded in the map fragment
-    private Map map = null;
+    private MapController map;
 
-    // map fragment embedded in this activity
-    private MapFragment mapFragment = null;
+    private AutoCompleteTextView searcher;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initialize();
-    }
-
-    private void initialize() {
         setContentView(R.layout.activity_main);
 
-        // Search for the map fragment to finish setup by calling init().
-        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapfragment);
+        map = new MapController(this);
+        searcher = findViewById(R.id.searcher);
 
-        // Set up disk cache path for the map service for this application
-        // It is recommended to use a path under your application folder for storing the disk cache.
-        boolean success = com.here.android.mpa.common.MapSettings.setIsolatedDiskCacheRootPath(
-                getApplicationContext().getExternalFilesDir(null) + File.separator + ".here-maps",
-                "EMTService");
+    }
 
-        if (!success) {
-            Toast.makeText(getApplicationContext(), "Unable to set isolated disk cache path.",
-                    Toast.LENGTH_LONG);
-        } else {
-            mapFragment.init(new OnEngineInitListener() {
-                @Override
-                public void onEngineInitializationCompleted(OnEngineInitListener.Error error) {
-                    if (error == OnEngineInitListener.Error.NONE) {
-                        // retrieve a reference of the map from the map fragment
-                        map = mapFragment.getMap();
-                        // Set the map center to the Vancouver region (no animation)
-                        map.setCenter(new GeoCoordinate(39.4078969, -0.4315509, 0.0),
-                                Map.Animation.NONE);
-                        // Set the zoom level to the average between min and max
-                        map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 2);
-
-                        final MapRouting mapRouting = new MapRouting(
-                                new GeoCoordinate(39.4078969, -0.4315509),
-                                new GeoCoordinate(39.4078969, -0.4385509),
-                                new GeoCoordinate(39.4028969, -0.4385509),
-                                new GeoCoordinate(39.4028969, -0.4285509));
-
-                        mapRouting.setOnCalculateRouteFinished(map);
+    public void onSearchButtonClicked(View view)
+    {
+        MapGeocoder geo = new MapGeocoder();
+        geo.search(searcher.getText().toString(), new ResultListener<List<GeocodeResult>>() {
+            @Override
+            public void onCompleted(List<GeocodeResult> geocodeResults, ErrorCode errorCode) {
+                map.setCenter(geocodeResults.get(0).getLocation().getCoordinate().getAltitude(),
+                        geocodeResults.get(0).getLocation().getCoordinate().getLongitude());
+            }
+        });
 
 
-                    } else {
-                        System.out.println("ERROR: Cannot initialize Map Fragment");
-                    }
-                }
-            });
-        }
     }
 }

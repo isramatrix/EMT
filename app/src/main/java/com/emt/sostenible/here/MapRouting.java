@@ -114,7 +114,7 @@ public final class MapRouting implements CoreRouter.Listener {
         return routeList;
     }
 
-    public void startRouting()
+    private void startRouting()
     {
         for (int i = 0; i < coreRouters.size(); i++) {
             coreRouters.get(i).calculateRoute(routeList.get(i), this);
