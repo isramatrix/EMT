@@ -31,8 +31,8 @@ public final class MapRouting implements CoreRouter.Listener {
     private OnCalculatedListener onCalculated;
 
     /**
-     * Generates a path between all the specified points of the map
-     * @param coordinates
+     * Generates a path between all the specified points of the map.
+     * @param coordinates coordinates of the map
      */
     public MapRouting(GeoCoordinate... coordinates)
     {
@@ -79,7 +79,7 @@ public final class MapRouting implements CoreRouter.Listener {
     /**
      * Sets up the fragments of the route.
      * @param coordinates
-     * @return
+     * @return the list of all paths (routes)
      */
     private List<RoutePlan> populateCoordenates(GeoCoordinate... coordinates)
     {
@@ -130,7 +130,7 @@ public final class MapRouting implements CoreRouter.Listener {
 
     /**
      * DO NOT CALL: Interface behaviour to do when the route is being calculated.
-     * @param i
+     * @param i progess of the calculation.
      */
     @Override
     public void onProgress(int i)

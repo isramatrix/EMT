@@ -1,9 +1,7 @@
 package com.emt.sostenible.here;
 
 import android.app.Activity;
-import android.content.Context;
 import android.location.Location;
-import android.widget.Toast;
 
 import com.emt.sostenible.R;
 import com.here.android.mpa.common.GeoCoordinate;
@@ -33,19 +31,17 @@ public class MapController {
                 context.getApplicationContext().getExternalFilesDir(null) + File.separator + ".here-maps",
                 "EMTService");
 
-        if (!success) {
-            Toast.makeText(context.getApplicationContext(), "Unable to set isolated disk cache path.",
-                    Toast.LENGTH_LONG);
-        } else {
+        if (success) {
             mapFragment.init(new OnEngineInitListener() {
                 @Override
                 public void onEngineInitializationCompleted(OnEngineInitListener.Error error) {
                     if (error == OnEngineInitListener.Error.NONE) {
                         // retrieve a reference of the map from the map fragment
                         map = mapFragment.getMap();
+
                         // Set the map center to the Vancouver region (no animation)
-                        map.setCenter(new GeoCoordinate(39.4178969, -0.4115509, 0.0),
-                                Map.Animation.NONE);
+                        map.setCenter(new GeoCoordinate(39.4178969, -0.4115509, 0.0), Map.Animation.NONE);
+
                         // Set the zoom level to the average between min and max
                         map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 1.5);
                         map.setMapScheme(Map.Scheme.NORMAL_DAY);
