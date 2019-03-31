@@ -8,6 +8,7 @@ import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.OnEngineInitListener;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapFragment;
+import com.here.android.mpa.mapping.MapMarker;
 
 import java.io.File;
 
@@ -71,5 +72,16 @@ public class MapController {
     public void addRoute(MapRouting mapRouting)
     {
         mapRouting.setOnCalculateRouteFinished(map);
+    }
+
+    public void addMarker(Map mapa, Location loct){
+
+        //Generar marcador
+        GeoCoordinate aux = new GeoCoordinate(loct.getLatitude(),loct.getLongitude());
+        MapMarker marca = new MapMarker(aux);
+
+        // Añadir marcador
+        mapa.addMapObject(marca);
+
     }
 }
