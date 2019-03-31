@@ -58,6 +58,16 @@ public final class MapRouting implements CoreRouter.Listener {
         onCalculated = onCalculatedListener;
     }
 
+    public void setOnCalculateRouteFinished(final Map map)
+    {
+        onCalculated = new OnCalculatedListener() {
+            @Override
+            public void complete(MapRouting mapRouting) {
+                mapRouting.trace(map);
+            }
+        };
+    }
+
     /**
      * DO NOT CALL: Interface behaviour to do when the route is successfully calculated.
      * @param routeResult

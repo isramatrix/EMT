@@ -25,18 +25,20 @@
         <meta-data android:name="com.here.android.maps.license.key"
             android:value="CSexP/PF6rlbuMZrssjw2FAOo8jvbVEZcb8yrZP5hFCJSYwL/UFcKmDH2lQfGij/iTDIcs1FnyYpYecGH1EsitUnNhUtlnYZy8hFtHBX6WUHIfLwAuNHjR0SCLjAavpiHdVxWrwDFEHYD0V2nU9XEiuh7TMSz0scsOj8uHDYdkYkc1fQyaRXjxJj7TPah8okrJHYrlYSIdon4He1yNAp1mRvVEmuQvq+Aoq0MvjWfhU1qYlDcLt7gOdvCrhLmck9VtC1b01wnaTod0LNQBTb/X/QBEivt47kbZK+TOXWNGlNFrel2DWMZYTbdHMygzsCJIbfk7IK63iW3NJUsbbXDnnAXWCUFC1zDMxeVPyz9pKthqhGrz4wvOdCMz9zep+fOl0Xdpj5CcCchVR+3mM1ndKdR917GV+ru8YuDojEAwFO4kGD80mK4f8ziSnZoj5HNvIWMohf45hLCRAhLGJx2WY49SnfjVAVzMFnaXhQehhkM3zc6vnyEBFfmjjujEtFnPwiWGlRvtJCjrR+ImXO9n7oXwkPvy9QytAlsriGked6PXqkySFo9DNhaZl/QA2u3sUwkIItIljzxd6xniSTRjQzIgsj4GWQ5VgM1v4Ut4FmXLk7yNWc7jdkFPCk6bNWEr1af5d2fvveUfyNVKOEcqDyJ99ZjMQGM2AiE4Eut3g="/>
 
-        <activity android:name=".activities.BasicMapActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".activities.BasicMapActivity" />
 
 
         <activity
             android:name=".activities.ParamsActivity"
             android:label="@string/title_activity_params"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
 
        <service
             android:name="com.here.android.mpa.service.MapService"

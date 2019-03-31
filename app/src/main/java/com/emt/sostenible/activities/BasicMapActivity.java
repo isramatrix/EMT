@@ -59,15 +59,10 @@ public class BasicMapActivity extends Activity {
                         final MapRouting mapRouting = new MapRouting(
                                 new GeoCoordinate(39.4078969, -0.4315509),
                                 new GeoCoordinate(39.4078969, -0.4385509),
-                                new GeoCoordinate(39.4028969, -0.4385509));
+                                new GeoCoordinate(39.4028969, -0.4385509),
+                                new GeoCoordinate(39.4028969, -0.4285509));
 
-                        mapRouting.setOnCalculateRouteFinished(new MapRouting.OnCalculatedListener()
-                        {
-                            @Override
-                            public void complete(MapRouting mapRouting) {
-                                mapRouting.trace(map);
-                            }
-                        });
+                        mapRouting.setOnCalculateRouteFinished(map);
 
 
                     } else {
