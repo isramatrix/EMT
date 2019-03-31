@@ -3,15 +3,11 @@ package com.emt.sostenible.here;
 import android.app.Activity;
 import android.location.Location;
 
-
 import com.emt.sostenible.R;
-import com.emt.sostenible.logic.LocationService;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.OnEngineInitListener;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapFragment;
-
-import com.here.android.mpa.mapping.MapMarker;
 
 import java.io.File;
 
@@ -23,14 +19,10 @@ public class MapController {
     // map fragment embedded in this activity
     private final MapFragment mapFragment;
 
-    //position manager para la localizacion en mapa
-    private PositioningManager posMan;
-
     public MapController(Activity context)
     {
         // Search for the map fragment to finish setup by calling init().
         mapFragment = (MapFragment) context.getFragmentManager().findFragmentById(R.id.mapfragment);
-
 
         // Set up disk cache path for the map service for this application
         // It is recommended to use a path under your application folder for storing the disk cache.
@@ -52,9 +44,6 @@ public class MapController {
                         // Set the zoom level to the average between min and max
                         map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 1.5);
                         map.setMapScheme(Map.Scheme.NORMAL_DAY);
-
-                        MarkerHandler m = new MarkerHandler(map);
-                        m.initialize();
 
                     } else {
                         System.out.println("ERROR: Cannot initialize Map Fragment");
@@ -83,17 +72,4 @@ public class MapController {
     {
         mapRouting.setOnCalculateRouteFinished(map);
     }
-
-    public void addMarker(Map mapa, Location loct){
-        
-        //Generar marcador
-        GeoCoordinate aux = new GeoCoordinate(loct.getLatitude(),loct.getLongitude());
-        MapMarker marca = new MapMarker(aux);
-
-        // Añadir marcador
-        mapa.addObject(marca);
-
-    }
-
-
 }

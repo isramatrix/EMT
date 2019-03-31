@@ -1,4 +1,4 @@
-package com.emt.sostenible.logic;
+package com.emt.sostenible.data;
 
 public class Parada {
     private Double lat, lon;
