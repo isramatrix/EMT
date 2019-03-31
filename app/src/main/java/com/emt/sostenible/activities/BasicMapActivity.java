@@ -1,16 +1,16 @@
 package com.emt.sostenible.activities;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.emt.sostenible.R;
+import com.emt.sostenible.here.MapRouting;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.OnEngineInitListener;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapFragment;
-import com.here.android.mpa.mapping.SupportMapFragment;
+import com.here.android.mpa.mapping.MapRoute;
 
 import java.io.File;
 
@@ -25,7 +25,6 @@ public class BasicMapActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         initialize();
     }
 
@@ -56,6 +55,21 @@ public class BasicMapActivity extends Activity {
                                 Map.Animation.NONE);
                         // Set the zoom level to the average between min and max
                         map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 2);
+
+                        final MapRouting mapRouting = new MapRouting(
+                                new GeoCoordinate(39.4078969, -0.4315509),
+                                new GeoCoordinate(39.4078969, -0.4385509),
+                                new GeoCoordinate(39.4028969, -0.4385509));
+
+                        mapRouting.setOnCalculateRouteFinished(new MapRouting.OnCalculatedListener()
+                        {
+                            @Override
+                            public void complete(MapRouting mapRouting) {
+                                mapRouting.trace(map);
+                            }
+                        });
+
+
                     } else {
                         System.out.println("ERROR: Cannot initialize Map Fragment");
                     }
