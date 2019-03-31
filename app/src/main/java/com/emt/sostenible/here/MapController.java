@@ -3,11 +3,15 @@ package com.emt.sostenible.here;
 import android.app.Activity;
 import android.location.Location;
 
+
 import com.emt.sostenible.R;
+import com.emt.sostenible.logic.LocationService;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.OnEngineInitListener;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapFragment;
+
+import com.here.android.mpa.mapping.MapMarker;
 
 import java.io.File;
 
@@ -18,6 +22,9 @@ public class MapController {
 
     // map fragment embedded in this activity
     private final MapFragment mapFragment;
+
+    //position manager para la localizacion en mapa
+    private PositioningManager posMan;
 
     public MapController(Activity context)
     {
@@ -75,6 +82,17 @@ public class MapController {
     public void addRoute(MapRouting mapRouting)
     {
         mapRouting.setOnCalculateRouteFinished(map);
+    }
+
+    public void addMarker(Map mapa, Location loct){
+        
+        //Generar marcador
+        GeoCoordinate aux = new GeoCoordinate(loct.getLatitude(),loct.getLongitude());
+        MapMarker marca = new MapMarker(aux);
+
+        // Añadir marcador
+        mapa.addObject(marca);
+
     }
 
 

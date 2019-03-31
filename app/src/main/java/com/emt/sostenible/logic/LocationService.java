@@ -111,16 +111,19 @@ public class LocationService {
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
                 // TODO: Missing implementation
+
             }
 
             @Override
             public void onProviderEnabled(String provider) {
                 // TODO: Missing implementation
+
             }
 
             @Override
             public void onProviderDisabled(String provider) {
                 // TODO: Missing implementation
+
             }
         });
     }
@@ -128,5 +131,6 @@ public class LocationService {
     public interface Listener
     {
         void allocate(double lat, double lon);
+
     }
 }

@@ -24,6 +24,7 @@ import com.emt.sostenible.here.MapRouting;
 import com.emt.sostenible.logic.LocationService;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.OnEngineInitListener;
+import com.here.android.mpa.common.PositioningManager;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapFragment;
 import com.here.android.mpa.mapping.MapRoute;
@@ -46,10 +47,14 @@ public class BasicMapActivity extends Activity {
 
     private LocationService locationService;
 
+    private PositioningManager posMan = new PositioningManager("GPS");
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         map = new MapController(this);
         searcher = findViewById(R.id.searcher);
@@ -69,6 +74,8 @@ public class BasicMapActivity extends Activity {
     public void onCenterButtonClicked(View view) {
         if (locationService.askForPermissions()) {
             Location location = locationService.getActualLocation();
+            //setear localizacion
+
             if (location != null) map.setCenter(location);
         }
     }
@@ -87,6 +94,7 @@ public class BasicMapActivity extends Activity {
     public void openRoutingButton(View view)
     {
         changeHeader(true);
+
     }
 
     /**
