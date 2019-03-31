@@ -47,9 +47,6 @@ public class BasicMapActivity extends Activity {
 
     private LocationService locationService;
 
-    private PositioningManager posMan = new PositioningManager("GPS");
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,9 +71,11 @@ public class BasicMapActivity extends Activity {
     public void onCenterButtonClicked(View view) {
         if (locationService.askForPermissions()) {
             Location location = locationService.getActualLocation();
-            //setear localizacion
 
-            if (location != null) map.setCenter(location);
+            if (location != null) {
+                map.addMarker(location);
+                map.setCenter(location);
+            }
         }
     }
 

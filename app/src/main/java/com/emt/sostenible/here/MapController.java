@@ -74,14 +74,14 @@ public class MapController {
         mapRouting.setOnCalculateRouteFinished(map);
     }
 
-    public void addMarker(Map mapa, Location loct){
+    public void addMarker(Location loct){
 
         //Generar marcador
         GeoCoordinate aux = new GeoCoordinate(loct.getLatitude(),loct.getLongitude());
         MapMarker marca = new MapMarker(aux);
 
         // Añadir marcador
-        mapa.addMapObject(marca);
+        map.addMapObject(marca);
 
     }
 }
