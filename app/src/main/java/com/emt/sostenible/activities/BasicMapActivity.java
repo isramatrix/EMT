@@ -2,8 +2,11 @@ package com.emt.sostenible.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emt.sostenible.R;
@@ -24,6 +27,8 @@ import java.util.List;
 
 public class BasicMapActivity extends Activity {
 
+    private View routing;
+
     private MapController map;
 
     private AutoCompleteTextView searcher;
@@ -36,6 +41,15 @@ public class BasicMapActivity extends Activity {
         map = new MapController(this);
         searcher = findViewById(R.id.searcher);
 
+        searcher.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                onSearchButtonClicked(v);
+                return true;
+            }
+        });
+
+        routing = findViewById(R.id.routing_view);
     }
 
     public void onSearchButtonClicked(View view)
@@ -48,7 +62,25 @@ public class BasicMapActivity extends Activity {
                         geocodeResults.get(0).getLocation().getCoordinate().getLongitude());
             }
         });
+    }
 
+    public void openRoutingButton(View view)
+    {
+        changeHeader(true);
+    }
 
+    /**
+     * Called when the activity has detected the user's press of the back
+     * key.  The default implementation simply finishes the current activity,
+     * but you can override this to do whatever you want.
+     */
+    @Override
+    public void onBackPressed() {
+        changeHeader(false);
+    }
+
+    private void changeHeader(boolean main)
+    {
+        routing.setVisibility(main ? View.VISIBLE : View.INVISIBLE);
     }
 }

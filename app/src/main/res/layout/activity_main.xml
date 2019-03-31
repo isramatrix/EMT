@@ -14,28 +14,145 @@
         android:layout_height="match_parent"/>
 
     <LinearLayout
+        android:id="@+id/header_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:orientation="horizontal">
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:visibility="visible">
 
-        <AutoCompleteTextView
-            android:id="@+id/searcher"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:padding="20dp"
-            android:text="AutoCompleteTextView" />
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/abeezee"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="EMT Verde"
+            android:textAlignment="textStart"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <ImageButton
-            android:id="@+id/imageButton"
             android:layout_width="120dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:onClick="onSearchButtonClicked"
+            android:onClick="openRoutingButton"
             android:src="@drawable/ic_search_black_24dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/routing_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/searcher"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="Elegix el teu destí"
+                android:imeOptions="actionDone"
+                android:singleLine="true" />
+
+            <ImageButton
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:onClick="onSearchButtonClicked"
+                android:src="@drawable/ic_search_black_24dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="Elegix on comences"
+                android:imeOptions="actionDone"
+                android:singleLine="true" />
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:onClick="onSearchButtonClicked"
+                android:src="@drawable/ic_my_location_black_24dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RadioButton
+                    android:id="@+id/radioButton4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:text="Anar per la via ràpida" />
+
+                <RadioButton
+                    android:id="@+id/radioButton5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:text="Anar per la via directa" />
+
+                <RadioButton
+                    android:id="@+id/radioButton6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:text="Anar per la via verda" />
+            </RadioGroup>
+        </LinearLayout>
+
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
