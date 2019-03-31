@@ -2,6 +2,7 @@ package com.emt.sostenible.here;
 
 import android.app.Activity;
 import android.content.Context;
+import android.location.Location;
 import android.widget.Toast;
 
 import com.emt.sostenible.R;
@@ -56,9 +57,15 @@ public class MapController {
         }
     }
 
-    public void setCenter(double lat, double lon)
+    public void setCenter(Location location)
     {
-        map.setCenter(new GeoCoordinate(lat, lon, 0.0), Map.Animation.LINEAR);
+        map.setCenter(new GeoCoordinate(location.getLatitude(), location.getLongitude(), 0.0), Map.Animation.LINEAR);
+    }
+
+    public void setCenter(com.here.android.mpa.search.Location location)
+    {
+        map.setCenter(new GeoCoordinate(location.getCoordinate().getLatitude(),
+                location.getCoordinate().getLongitude(), 0.0), Map.Animation.LINEAR);
     }
 
     public void setZoom(float zoom) {

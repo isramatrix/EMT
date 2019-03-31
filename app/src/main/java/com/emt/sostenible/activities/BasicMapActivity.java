@@ -1,7 +1,15 @@
 package com.emt.sostenible.activities;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
+import android.support.v4.app.ActivityCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +21,7 @@ import com.emt.sostenible.R;
 import com.emt.sostenible.here.MapController;
 import com.emt.sostenible.here.MapGeocoder;
 import com.emt.sostenible.here.MapRouting;
+import com.emt.sostenible.logic.LocationService;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.OnEngineInitListener;
 import com.here.android.mpa.mapping.Map;
@@ -21,6 +30,8 @@ import com.here.android.mpa.mapping.MapRoute;
 import com.here.android.mpa.search.ErrorCode;
 import com.here.android.mpa.search.GeocodeResult;
 import com.here.android.mpa.search.ResultListener;
+import com.here.services.HereLocationApiClient;
+import com.here.services.location.LocationServices;
 
 import java.io.File;
 import java.util.List;
@@ -32,6 +43,8 @@ public class BasicMapActivity extends Activity {
     private MapController map;
 
     private AutoCompleteTextView searcher;
+
+    private LocationService locationService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +63,14 @@ public class BasicMapActivity extends Activity {
         });
 
         routing = findViewById(R.id.routing_view);
+        locationService = LocationService.getInstance(this);
+    }
+
+    public void onCenterButtonClicked(View view) {
+        if (locationService.askForPermissions()) {
+            Location location = locationService.getActualLocation();
+            if (location != null) map.setCenter(location);
+        }
     }
 
     public void onSearchButtonClicked(View view)
@@ -58,8 +79,7 @@ public class BasicMapActivity extends Activity {
         geo.search(searcher.getText().toString(), new ResultListener<List<GeocodeResult>>() {
             @Override
             public void onCompleted(List<GeocodeResult> geocodeResults, ErrorCode errorCode) {
-                map.setCenter(geocodeResults.get(0).getLocation().getCoordinate().getAltitude(),
-                        geocodeResults.get(0).getLocation().getCoordinate().getLongitude());
+                map.setCenter(geocodeResults.get(0).getLocation());
             }
         });
     }

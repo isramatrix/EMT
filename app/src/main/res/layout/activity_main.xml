@@ -164,6 +164,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:clickable="true"
+        android:onClick="onCenterButtonClicked"
         android:src="@drawable/ic_my_location_black_24dp"
         app:backgroundTint="#FFFF00"
         app:elevation="2dp"
