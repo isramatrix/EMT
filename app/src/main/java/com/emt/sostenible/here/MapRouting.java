@@ -30,6 +30,10 @@ public final class MapRouting implements CoreRouter.Listener {
 
     private OnCalculatedListener onCalculated;
 
+    /**
+     * Generates a path between all the specified points of the map
+     * @param coordinates
+     */
     public MapRouting(GeoCoordinate... coordinates)
     {
         counter = new AtomicInteger(coordinates.length - 1);
@@ -51,13 +55,17 @@ public final class MapRouting implements CoreRouter.Listener {
     }
 
     /**
-     *  Programs an action to do when Route calculation is finished.
+     *  Sets up an action to do when Route calculation is finished.
      */
     public void setOnCalculateRouteFinished(OnCalculatedListener onCalculatedListener)
     {
         onCalculated = onCalculatedListener;
     }
 
+    /**
+     * Sets up the map which data will be shown on when calculation is finished.
+     * @param map the mao which data will be shown on.
+     */
     public void setOnCalculateRouteFinished(final Map map)
     {
         onCalculated = new OnCalculatedListener() {
@@ -66,6 +74,39 @@ public final class MapRouting implements CoreRouter.Listener {
                 mapRouting.trace(map);
             }
         };
+    }
+
+    /**
+     * Sets up the fragments of the route.
+     * @param coordinates
+     * @return
+     */
+    private List<RoutePlan> populateCoordenates(GeoCoordinate... coordinates)
+    {
+        List<RoutePlan> routeList = new ArrayList<>();
+        routeList.add(new RoutePlan());
+
+        int i = 0;
+        for (GeoCoordinate c : coordinates) {
+            routeList.add(new RoutePlan());
+            coreRouters.add(new CoreRouter());
+            routeList.get(i).addWaypoint(new RouteWaypoint(c));
+            routeList.get(++i).addWaypoint(new RouteWaypoint(c));
+        }
+
+        routeList.remove(i);
+
+        return routeList;
+    }
+
+    /**
+     * Initializes the route calculation.
+     */
+    private void startRouting()
+    {
+        for (int i = 0; i < coreRouters.size(); i++) {
+            coreRouters.get(i).calculateRoute(routeList.get(i), this);
+        }
     }
 
     /**
@@ -88,39 +129,13 @@ public final class MapRouting implements CoreRouter.Listener {
     }
 
     /**
-     *
+     * DO NOT CALL: Interface behaviour to do when the route is being calculated.
      * @param i
      */
     @Override
     public void onProgress(int i)
     {
     }
-
-    private List<RoutePlan> populateCoordenates(GeoCoordinate... coordinates)
-    {
-        List<RoutePlan> routeList = new ArrayList<>();
-        routeList.add(new RoutePlan());
-
-        int i = 0;
-        for (GeoCoordinate c : coordinates) {
-            routeList.add(new RoutePlan());
-            coreRouters.add(new CoreRouter());
-            routeList.get(i).addWaypoint(new RouteWaypoint(c));
-            routeList.get(++i).addWaypoint(new RouteWaypoint(c));
-        }
-
-        routeList.remove(i);
-
-        return routeList;
-    }
-
-    private void startRouting()
-    {
-        for (int i = 0; i < coreRouters.size(); i++) {
-            coreRouters.get(i).calculateRoute(routeList.get(i), this);
-        }
-    }
-
 
     public interface OnCalculatedListener
     {
