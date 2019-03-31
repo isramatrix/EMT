@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.location.Location;
 
 import com.emt.sostenible.R;
-import com.emt.sostenible.logic.MarkerHandler;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.OnEngineInitListener;
 import com.here.android.mpa.mapping.Map;
@@ -24,7 +23,6 @@ public class MapController {
     {
         // Search for the map fragment to finish setup by calling init().
         mapFragment = (MapFragment) context.getFragmentManager().findFragmentById(R.id.mapfragment);
-
 
         // Set up disk cache path for the map service for this application
         // It is recommended to use a path under your application folder for storing the disk cache.
@@ -46,9 +44,6 @@ public class MapController {
                         // Set the zoom level to the average between min and max
                         map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 1.5);
                         map.setMapScheme(Map.Scheme.NORMAL_DAY);
-
-                        MarkerHandler m = new MarkerHandler(map);
-                        m.initialize();
 
                     } else {
                         System.out.println("ERROR: Cannot initialize Map Fragment");
