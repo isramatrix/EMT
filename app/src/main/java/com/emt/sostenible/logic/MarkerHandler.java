@@ -1,4 +1,4 @@
-package com.emt.sostenible.here;
+package com.emt.sostenible.logic;
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,7 +23,7 @@ public class MarkerHandler {
         BufferedReader br = null;
         FileReader fr = null;
         try{
-            File f = new File("com/emt/sostenible/data/localizacionParadas.json");
+            File f = new File("./localizacionParadas.json");
             fr = new FileReader(f);
         }catch(Exception e){
             e.printStackTrace();

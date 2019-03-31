@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.location.Location;
 
 import com.emt.sostenible.R;
+import com.emt.sostenible.logic.MarkerHandler;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.OnEngineInitListener;
 import com.here.android.mpa.mapping.Map;
@@ -76,6 +77,4 @@ public class MapController {
     {
         mapRouting.setOnCalculateRouteFinished(map);
     }
-
-
 }
