@@ -1,5 +1,6 @@
 package com.emt.sostenible.view;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.media.Image;
 import android.os.Parcel;
@@ -7,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.autofill.AutofillValue;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -97,7 +99,17 @@ public class SearchHeader extends LinearLayout {
 
     public void visibilityHeader(boolean visible)
     {
+        int x = visible ? searchButton.getRight() : backButton.getLeft();
+        int y = visible ? searchButton.getBottom() : backButton.getBottom();
+
+        int opened = (int) Math.hypot(getWidth(), getHeight());
+
+        int startRadius = visible ? 0 : opened;
+        int endRadius = visible ? opened : 0;
+
+        Animator anim = ViewAnimationUtils.createCircularReveal(this, x, y, startRadius, endRadius);
         setVisibility(visible ? VISIBLE : INVISIBLE);
+        anim.start();
     }
 
 
