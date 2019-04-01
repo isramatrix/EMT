@@ -1,8 +1,8 @@
 package com.emt.sostenible.data;
 
-public class Stop{
+public class Stop {
 
-   private String stop_id;
+    private String stop_id;
     private String stop_code;
     private String stop_name;
     private String stop_desc;

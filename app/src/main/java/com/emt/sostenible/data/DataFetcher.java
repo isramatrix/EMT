@@ -19,42 +19,51 @@ import org.json.*;
 
 public class DataFetcher {
 
-    //Mapa de paradas indexado por enteros que representan el numero de linea
-    private static Map<Integer, ArrayList<Parada>> stopsMap;
     //Lista de paradas
-    private static Parada[] listaParadas;
+    private static Stop[] stops;
 
 
     public DataFetcher(final Context context)
     {
         try {
-            InputStream is = context.getAssets().open("json/localizacionParadas.json");
-        }catch (IOException e) {
+            InputStream is = context.getAssets().open("json/Texts/stops.txt");
+            stops = processStops(is);
+            is.close();
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-
     }
 
+    private Stop[] processStops(InputStream is){
+        try {
+            LinkedList<String[]> stopsList = csvToString(is);
+            Stop[] stops = new Stop[stopsList.size()];
+            int i = 0;
+            for (String[] s: stopsList) {
+                stops[i] = new Stop(s[0], s[1],s[2],s[3],s[4],s[5],s[6],s[7],s[8],"");
+                i++;
+            }
+            return stops;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new Stop[0];
+        }
+    }
 
     //Coge un @param InputStream de tipo csv y omite la primera linea y lo tokeniza en una array de dos dimensiones
     private LinkedList<String[]> csvToString(InputStream in){
         Scanner s = new Scanner(in);
         LinkedList<String[]> list = new LinkedList();
-        s.nextLine();
+        String original = s.nextLine();
         while(s.hasNextLine()){
             String temps = s.nextLine();
             String[] temp = temps.split(",");
             list.add(temp);
         }
         return list;
-    }
-
-    public Map<Line, Parada> getAllStops()
-    {
-        Map toReturn = new Hashtable<Integer, ArrayList<Parada>>();
-
-        return null;
     }
 
     /*
