@@ -93,6 +93,40 @@ public class DataFetcher {
         }
     }
 
+    private Frequency[] processFrequencies(InputStream is){
+        try {
+            LinkedList<String[]> frequenciesList = csvToString(is);
+            Frequency[] frecuencies = new Frequency[frequenciesList.size()];
+            int i = 0;
+            for (String[] s: frequenciesList) {
+                frecuencies[i] = new Frequency(s[0], s[1],s[2],s[3]);
+                i++;
+            }
+            return frecuencies;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new Frequency[0];
+        }
+    }
+
+    private Route[] processRoutes(InputStream is){
+        try {
+            LinkedList<String[]> routesList = csvToString(is);
+            Route[] routes = new Route[routesList.size()];
+            int i = 0;
+            for (String[] s: routesList) {
+                routes[i] = new Route(s[0], s[1],s[2],s[3],s[4],s[5],s[6],s[7],s[8]);
+                i++;
+            }
+            return routes;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new Route[0];
+        }
+    }
+
     private Calendar[] processCalendar(InputStream is){
         try {
             LinkedList<String[]> calendarsList = csvToString(is);
