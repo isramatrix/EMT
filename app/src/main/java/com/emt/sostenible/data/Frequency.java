@@ -1,12 +1,12 @@
 package com.emt.sostenible.data;
 
-public class Frequencie {
+public class Frequency {
     private String trip_id;
     private String start_time;
     private String end_time;
     private String headway_secs;
 
-    public Frequencie(String trip_id, String start_time, String end_time, String headway_secs) {
+    public Frequency(String trip_id, String start_time, String end_time, String headway_secs) {
         this.trip_id = trip_id;
         this.start_time = start_time;
         this.end_time = end_time;

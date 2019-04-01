@@ -1,11 +1,11 @@
 package com.emt.sostenible.data;
 
-public class Calendar_date {
+public class CalendarDate {
     private String service_id;
     private String date;
     private String exception_type;
 
-    public Calendar_date(String service_id, String date, String exception_type) {
+    public CalendarDate(String service_id, String date, String exception_type) {
         this.service_id = service_id;
         this.date = date;
         this.exception_type = exception_type;
