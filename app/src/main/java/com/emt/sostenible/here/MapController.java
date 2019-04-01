@@ -2,10 +2,6 @@ package com.emt.sostenible.here;
 
 import android.app.Activity;
 import android.location.Location;
-import android.R.drawable;
-import android.widget.ImageView;
-import android.media.Image;
-
 
 import com.emt.sostenible.R;
 import com.here.android.mpa.common.GeoCoordinate;
@@ -17,8 +13,6 @@ import com.here.android.mpa.mapping.MapMarker;
 
 
 import java.io.File;
-
-import static com.emt.sostenible.R.drawable.ic_person_pin_circle_black_24dp;
 
 public class MapController {
 

@@ -14,7 +14,6 @@
         android:layout_height="match_parent"/>
 
     <LinearLayout
-        android:id="@+id/header_view"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:orientation="horizontal"
@@ -23,7 +22,6 @@
         android:visibility="visible">
 
         <ImageView
-            android:id="@+id/imageView"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -46,40 +44,54 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:onClick="openRoutingButton"
+            android:onClick="onSearchButtonClicked"
             android:src="@drawable/ic_search_black_24dp" />
 
     </LinearLayout>
 
-    <LinearLayout
+    <com.emt.sostenible.view.SearchHeader
         android:id="@+id/routing_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/background_light"
+        android:background="@drawable/background"
         android:orientation="vertical"
-        android:padding="10dp"
-        android:visibility="gone">
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="30dp"
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded"
             android:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            android:padding="12dp">
+
+            <ImageButton
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:onClick="onSearchButtonClicked"
+                android:src="@drawable/ic_arrow_back_black_24dp" />
 
             <AutoCompleteTextView
-                android:id="@+id/searcher"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
+                android:fontFamily="@font/abeezee"
                 android:hint="Elegix el teu destí"
                 android:imeOptions="actionDone"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:singleLine="true" />
 
             <ImageButton
-                android:layout_width="120dp"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
@@ -90,23 +102,33 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded"
             android:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            android:padding="12dp">
+
+            <ImageButton
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent" />
 
             <AutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:hint="Elegix on comences"
+                android:fontFamily="@font/abeezee"
+                android:hint="Elegix el teu destí"
                 android:imeOptions="actionDone"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:singleLine="true" />
 
             <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="120dp"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
@@ -118,20 +140,33 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            android:background="@drawable/rounded"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/abeezee"
+                android:padding="5dp"
+                android:text="@string/route_type_text" />
 
             <RadioGroup
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp">
 
                 <RadioButton
                     android:id="@+id/radioButton4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:drawableRight="@drawable/ic_access_time_black_24dp"
+                    android:drawablePadding="10dp"
+                    android:fontFamily="@font/abeezee"
                     android:padding="10dp"
                     android:text="Anar per la via ràpida" />
 
@@ -140,6 +175,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:drawableRight="@drawable/ic_accessible_black_24dp"
+                    android:drawablePadding="10dp"
+                    android:fontFamily="@font/abeezee"
                     android:padding="10dp"
                     android:text="Anar per la via directa" />
 
@@ -148,12 +186,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:drawableRight="@drawable/ic_eco_black_24dp"
+                    android:drawablePadding="15dp"
+                    android:fontFamily="@font/abeezee"
                     android:padding="10dp"
                     android:text="Anar per la via verda" />
             </RadioGroup>
         </LinearLayout>
 
-    </LinearLayout>
+    </com.emt.sostenible.view.SearchHeader>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton3"
@@ -166,7 +207,7 @@
         android:clickable="true"
         android:onClick="onCenterButtonClicked"
         android:src="@drawable/ic_my_location_black_24dp"
-        app:backgroundTint="#FFFF00"
+        app:backgroundTint="@color/secondaryColor"
         app:elevation="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -1,51 +1,34 @@
 package com.emt.sostenible.activities;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.PendingIntent;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Looper;
-import android.support.v4.app.ActivityCompat;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.emt.sostenible.R;
 import com.emt.sostenible.here.MapController;
 import com.emt.sostenible.here.MapGeocoder;
-import com.emt.sostenible.here.MapRouting;
 import com.emt.sostenible.logic.LocationService;
-import com.here.android.mpa.common.GeoCoordinate;
-import com.here.android.mpa.common.OnEngineInitListener;
-import com.here.android.mpa.common.PositioningManager;
-import com.here.android.mpa.mapping.Map;
-import com.here.android.mpa.mapping.MapFragment;
-import com.here.android.mpa.mapping.MapRoute;
+import com.emt.sostenible.view.SearchHeader;
 import com.here.android.mpa.search.ErrorCode;
 import com.here.android.mpa.search.GeocodeResult;
 import com.here.android.mpa.search.ResultListener;
-import com.here.services.HereLocationApiClient;
-import com.here.services.location.LocationServices;
 
-import java.io.File;
 import java.util.List;
 
 public class BasicMapActivity extends Activity {
 
-    private View routing;
-
     private MapController map;
 
-    private AutoCompleteTextView searcher;
-
     private LocationService locationService;
+
+    private SearchHeader searchHeader;
+
+    private ImageButton button;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,20 +37,22 @@ public class BasicMapActivity extends Activity {
 
 
         map = new MapController(this);
-        searcher = findViewById(R.id.searcher);
+        searchHeader = findViewById(R.id.routing_view);
+        locationService = LocationService.getInstance(this);
 
-        searcher.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        searchHeader.onDestinationChanged(new SearchHeader.OnTextChangedListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                onSearchButtonClicked(v);
-                return true;
+            public void changed(String text) {
+                System.out.println(text);
+                searchHeader.inflateAutoCompleteDestination(null);
             }
         });
-
-        routing = findViewById(R.id.routing_view);
-        locationService = LocationService.getInstance(this);
     }
 
+    /**
+     *
+     * @param view
+     */
     public void onCenterButtonClicked(View view) {
         if (locationService.askForPermissions()) {
             Location location = locationService.getActualLocation();
@@ -79,21 +64,13 @@ public class BasicMapActivity extends Activity {
         }
     }
 
+    /**
+     *
+     * @param view
+     */
     public void onSearchButtonClicked(View view)
     {
-        MapGeocoder geo = new MapGeocoder();
-        geo.search(searcher.getText().toString(), new ResultListener<List<GeocodeResult>>() {
-            @Override
-            public void onCompleted(List<GeocodeResult> geocodeResults, ErrorCode errorCode) {
-                map.setCenter(geocodeResults.get(0).getLocation());
-            }
-        });
-    }
-
-    public void openRoutingButton(View view)
-    {
-        changeHeader(true);
-
+        searchHeader.visibilityHeader(true);
     }
 
     /**
@@ -103,11 +80,6 @@ public class BasicMapActivity extends Activity {
      */
     @Override
     public void onBackPressed() {
-        changeHeader(false);
-    }
-
-    private void changeHeader(boolean main)
-    {
-        routing.setVisibility(main ? View.VISIBLE : View.INVISIBLE);
+        searchHeader.visibilityHeader(false);
     }
 }
