@@ -19,29 +19,60 @@ import org.json.*;
 
 public class DataFetcher {
 
-    //Lista de paradas
-    private static Stop[] stops;
-    private static Frequency[] frequencies;
-    private static Route[] routes;
-    private static Shape[] shapes;
-    //Lista de Agency
-    private static Agency[] agencies;
-    //Lista de Calendar
-    private static Calendar[] calendars;
-    //Lista de CalendarDate
+    //Listas de objetos
+    private static Stop[]         stops;
+    private static StopTime[]     stopTimes;
+    private static Frequency[]    frequencies;
+    private static Route[]        routes;
+    private static Shape[]        shapes;
+    private static Agency[]       agencies;
+    private static Calendar[]     calendars;
     private static CalendarDate[] calendarDates;
+    private static Trip[]         trips;
 
 
     public DataFetcher(final Context context)
     {
-        try {
-            InputStream is = context.getAssets().open("json/Texts/stops.txt");
-            stops = processStops(is);
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        //Nombre de los ficheros a usar
+        String[] ficheros = {
+            "json/Texts/agency.txt",
+            "json/Texts/calendar.txt",
+            "json/Texts/calendar_dates.txt",
+            "json/Texts/frequencies.txt",
+            "json/Texts/routes.txt",
+            "json/Texts/shapes.txt",
+            "json/Texts/stop_times.txt",
+            "json/Texts/stops.txt",
+            "json/Texts/trips"
+        };
+        for(int i = 0; i < ficheros.length; i++){
+            try {
+                InputStream is = context.getAssets().open(ficheros[i]);
+                switch(i){
+                    case 0: agencies =
+                            processAgencies(is);    break;
+                    case 1: calendars =
+                            processCalendar(is);    break;
+                    case 2: calendarDates =
+                            processCalendarDate(is);break;
+                    case 3: frequencies =
+                            processFrequencies(is); break;
+                    case 4: routes =
+                            processRoutes(is);      break;
+                    case 5: shapes =
+                            processShape(is);       break;
+                    case 6: stopTimes =
+                            processStopTime(is);    break;
+                    case 7: stops =
+                            processStops(is);       break;
+                    case 8: trips =
+                            processTrip(is);        break;
+                }
+                is.close();
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
 
     }
     //Coge un @param InputStream de tipo csv y omite la primera linea y lo tokeniza en una array de dos dimensiones
