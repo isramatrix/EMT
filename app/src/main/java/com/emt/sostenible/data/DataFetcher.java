@@ -21,6 +21,12 @@ public class DataFetcher {
 
     //Lista de paradas
     private static Stop[] stops;
+    //Lista de Agency
+    private static Agency[] agencies;
+    //Lista de Calendar
+    private static Calendar[] calendars;
+    //Lista de CalendarDate
+    private static CalendarDate[] calendarDates;
 
 
     public DataFetcher(final Context context)
@@ -50,6 +56,57 @@ public class DataFetcher {
         }catch (Exception e) {
             e.printStackTrace();
             return new Stop[0];
+        }
+    }
+
+    private Agency[] processAgencies(InputStream is){
+        try {
+            LinkedList<String[]> agenciesList = csvToString(is);
+            Agency[] agencies = new Agency[agenciesList.size()];
+            int i = 0;
+            for (String[] s: agenciesList) {
+                agencies[i] = new Agency(s[0], s[1],s[2],s[3],s[4],s[5]);
+                i++;
+            }
+            return agencies;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new Agency[0];
+        }
+    }
+
+    private Calendar[] processCalendar(InputStream is){
+        try {
+            LinkedList<String[]> calendarsList = csvToString(is);
+            Calendar[] calendars = new Calendar[calendarsList.size()];
+            int i = 0;
+            for (String[] s: calendarsList) {
+                calendars[i] = new Calendar(s[0], s[1],s[2],s[3],s[4],s[5],s[6],s[7],s[8],s[9]);
+                i++;
+            }
+            return calendars;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new Calendar [0];
+        }
+    }
+
+    private CalendarDate[] processCalendarDate(InputStream is){
+        try {
+            LinkedList<String[]> calendarDatesList = csvToString(is);
+            CalendarDate[] calendarDates = new CalendarDate[calendarDatesList.size()];
+            int i = 0;
+            for (String[] s: calendarDatesList) {
+                calendarDates[i] = new CalendarDate(s[0], s[1],s[2]);
+                i++;
+            }
+            return calendarDates;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new CalendarDate[0];
         }
     }
 
