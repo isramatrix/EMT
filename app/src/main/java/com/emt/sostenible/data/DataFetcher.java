@@ -21,6 +21,9 @@ public class DataFetcher {
 
     //Lista de paradas
     private static Stop[] stops;
+    private static Frequency[] frequencies;
+    private static Route[] routes;
+    private static Shape[] shapes;
     //Lista de Agency
     private static Agency[] agencies;
     //Lista de Calendar
@@ -107,6 +110,57 @@ public class DataFetcher {
         }catch (Exception e) {
             e.printStackTrace();
             return new CalendarDate[0];
+        }
+    }
+
+    private Shape[] processShape(InputStream is){
+        try {
+            LinkedList<String[]> stopsList = csvToString(is);
+            Shape[] stops = new Shape[stopsList.size()];
+            int i = 0;
+            for (String[] s: stopsList) {
+                stops[i] = new Shape(s[0], s[1],s[2],s[3],s[4]);
+                i++;
+            }
+            return stops;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new Shape[0];
+        }
+    }
+
+    private StopTime[] processStopTime(InputStream is){
+        try {
+            LinkedList<String[]> stopsList = csvToString(is);
+            StopTime[] stops = new StopTime[stopsList.size()];
+            int i = 0;
+            for (String[] s: stopsList) {
+                stops[i] = new StopTime(s[0], s[1],s[2],s[3],s[4],s[5],s[6],s[7],s[8]);
+                i++;
+            }
+            return stops;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new StopTime[0];
+        }
+    }
+
+    private Trip[] processTrip(InputStream is){
+        try {
+            LinkedList<String[]> stopsList = csvToString(is);
+            Trip[] stops = new Trip[stopsList.size()];
+            int i = 0;
+            for (String[] s: stopsList) {
+                stops[i] = new Trip(s[0], s[1],s[2],s[3],s[4],s[5],s[6]);
+                i++;
+            }
+            return stops;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new Trip[0];
         }
     }
 
