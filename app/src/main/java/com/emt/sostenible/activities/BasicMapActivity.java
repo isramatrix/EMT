@@ -1,6 +1,7 @@
 package com.emt.sostenible.activities;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -12,8 +13,11 @@ import android.widget.TextView;
 import com.emt.sostenible.R;
 import com.emt.sostenible.here.MapController;
 import com.emt.sostenible.here.MapGeocoder;
+import com.emt.sostenible.here.MapRouting;
 import com.emt.sostenible.logic.LocationService;
 import com.emt.sostenible.view.SearchHeader;
+import com.here.android.mpa.common.GeoCoordinate;
+import com.here.android.mpa.routing.RouteOptions;
 import com.here.android.mpa.search.ErrorCode;
 import com.here.android.mpa.search.GeocodeResult;
 import com.here.android.mpa.search.ResultListener;
@@ -47,7 +51,7 @@ public class BasicMapActivity extends Activity {
                 searchHeader.inflateAutoCompleteDestination(null);
             }
         });
-    }
+            }
 
     /**
      *
@@ -58,10 +62,28 @@ public class BasicMapActivity extends Activity {
             Location location = locationService.getActualLocation();
 
             if (location != null) {
-                map.addMarker(location);
                 map.setCenter(location);
             }
         }
+
+        MapRouting mp = new MapRouting(Color.YELLOW,
+                new GeoCoordinate(41, 0),
+                new GeoCoordinate(40, 0),
+                new GeoCoordinate(40, -1),
+                new GeoCoordinate(40, -2),
+                new GeoCoordinate(39, -2)
+        );
+
+        MapRouting mp2 = new MapRouting(Color.RED,
+                new GeoCoordinate(41, -2),
+                new GeoCoordinate(41, -1),
+                new GeoCoordinate(40, -1),
+                new GeoCoordinate(39, -1),
+                new GeoCoordinate(39, -0.4)
+        );
+
+        map.addRoute(mp2);
+        map.addRoute(mp);
     }
 
     /**

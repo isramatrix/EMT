@@ -73,6 +73,9 @@ public class MapController {
 
     public void addRoute(MapRouting mapRouting)
     {
+        for (GeoCoordinate c : mapRouting.getGeoCoordinates())
+            map.addMapObject(new MapMarker(c));
+
         mapRouting.setOnCalculateRouteFinished(map);
     }
 

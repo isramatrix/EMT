@@ -1,5 +1,7 @@
 package com.emt.sostenible.here;
 
+import android.graphics.Color;
+
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapRoute;
@@ -28,14 +30,20 @@ public final class MapRouting implements CoreRouter.Listener {
 
     private final AtomicInteger counter;
 
+    private final List<GeoCoordinate> coordinates;
+
     private OnCalculatedListener onCalculated;
+
+    private int color;
 
     /**
      * Generates a path between all the specified points of the map.
      * @param coordinates coordinates of the map
      */
-    public MapRouting(GeoCoordinate... coordinates)
+    public MapRouting(int color, GeoCoordinate... coordinates)
     {
+        this.color = color;
+        this.coordinates = new ArrayList<>();
         counter = new AtomicInteger(coordinates.length - 1);
         routeList = populateCoordenates(coordinates);
 
@@ -50,8 +58,10 @@ public final class MapRouting implements CoreRouter.Listener {
      * @param map on which changes will be applied.
      */
     public void trace(Map map) {
-        for (MapRoute route : mapRoute)
+        for (MapRoute route : mapRoute) {
+            route.setColor(color);
             map.addMapObject(route);
+        }
     }
 
     /**
@@ -76,6 +86,11 @@ public final class MapRouting implements CoreRouter.Listener {
         };
     }
 
+    public List<GeoCoordinate> getGeoCoordinates()
+    {
+        return coordinates;
+    }
+
     /**
      * Sets up the fragments of the route.
      * @param coordinates
@@ -90,6 +105,7 @@ public final class MapRouting implements CoreRouter.Listener {
         for (GeoCoordinate c : coordinates) {
             routeList.add(new RoutePlan());
             coreRouters.add(new CoreRouter());
+            this.coordinates.add(c);
             routeList.get(i).addWaypoint(new RouteWaypoint(c));
             routeList.get(++i).addWaypoint(new RouteWaypoint(c));
         }
@@ -134,8 +150,7 @@ public final class MapRouting implements CoreRouter.Listener {
      */
     @Override
     public void onProgress(int i)
-    {
-    }
+    { }
 
     public interface OnCalculatedListener
     {
