@@ -2,6 +2,7 @@ package com.emt.sostenible.data;
 
 import android.content.Context;
 import android.util.ArrayMap;
+import android.util.JsonReader;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -30,6 +31,9 @@ public class DataFetcher {
             e.printStackTrace();
         }
     }
+
+
+
 
     public Map<Line, Parada> getAllStops()
     {
