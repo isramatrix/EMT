@@ -107,6 +107,44 @@ public class DataFetcher {
         }
     }
 
+    public static Stop[] getStops() {
+        return stops;
+    }
+
+    public static StopTime[] getStopTimes() {
+        return stopTimes;
+    }
+
+    public static Frequency[] getFrequencies() {
+        return frequencies;
+    }
+
+    public static Route[] getRoutes() {
+        return routes;
+    }
+
+    public static Shape[] getShapes() {
+        return shapes;
+    }
+
+    public static Agency[] getAgencies() {
+        return agencies;
+    }
+
+    public static Calendar[] getCalendars() {
+        return calendars;
+    }
+
+    public static CalendarDate[] getCalendarDates() {
+        return calendarDates;
+    }
+
+    public static Trip[] getTrips() {
+        return trips;
+    }
+
+    //BAD BUT FUNCTIONAL CODE, DO NOT LOOK NOR CHANGE
+    //Done for prefetching efficiency purposes
     private Agency[] processAgencies(InputStream is){
         try {
             LinkedList<String[]> agenciesList = csvToString(is);
