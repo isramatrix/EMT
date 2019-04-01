@@ -2,6 +2,8 @@ package com.emt.sostenible.here;
 
 import android.app.Activity;
 import android.location.Location;
+import android.widget.ImageView;
+
 
 import com.emt.sostenible.R;
 import com.here.android.mpa.common.GeoCoordinate;
@@ -9,6 +11,7 @@ import com.here.android.mpa.common.OnEngineInitListener;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapFragment;
 import com.here.android.mpa.mapping.MapMarker;
+import com.here.android.mpa.common.Image;
 
 
 
@@ -21,6 +24,7 @@ public class MapController {
 
     // map fragment embedded in this activity
     private final MapFragment mapFragment;
+    private MapMarker marca;
 
     public MapController(Activity context)
     {
@@ -83,16 +87,32 @@ public class MapController {
     //Añadir marcador de persona pasandole Location
     public void addPersona(Location loct){
 
+        if (marca != null) map.removeMapObject(marca);
+
         //Generar marcador
         GeoCoordinate aux = new GeoCoordinate(loct.getLatitude(),loct.getLongitude());
-        MapMarker marca = new MapMarker(aux);
-        //Modificar icono
-        marca.setDescription("Estoy aqui");
-//        Image icono;
-//        marca.setIcon();
+        //Modificar icon
+        try {
+            Image image = new Image();
+            //Añadir png aqui
+            image.setImageResource(R.drawable.placeholder);
+            marca = new MapMarker(aux, image);
+            marca.setDescription("Estoy aqui");
+            map.addMapObject(marca);
 
-        // Añadir marcador
-        map.addMapObject(marca);
+        } catch (Exception e) {
+            System.out.print("NOT FOUND IMAGE");
+        }
+
+
 
     }
+
+//    public void AddParadaBus(Location loct){
+//        if(parada != null) map.removeMapObject(parada);
+//        GeoCoordinate aux = new GeoCoordinate(loct.getLatitude(),loct.getLongitude());
+//
+//
+//
+//    }
 }
