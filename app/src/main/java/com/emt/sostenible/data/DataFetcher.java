@@ -32,10 +32,10 @@ public class DataFetcher {
             InputStream is = context.getAssets().open("json/Texts/stops.txt");
             stops = processStops(is);
             is.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+
 
     }
 
