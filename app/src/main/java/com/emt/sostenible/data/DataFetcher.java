@@ -24,6 +24,12 @@ public class DataFetcher {
     private static Frequency[] frequencies;
     private static Route[] routes;
     private static Shape[] shapes;
+    //Lista de Agency
+    private static Agency[] agencies;
+    //Lista de Calendar
+    private static Calendar[] calendars;
+    //Lista de CalendarDate
+    private static CalendarDate[] calendarDates;
 
 
     public DataFetcher(final Context context)
@@ -38,43 +44,20 @@ public class DataFetcher {
 
 
     }
-
-
-
-    //DO NOT READ THE FOLLOWING CODE, THIS IS HELL AND NOT UP TO GOOD PROGRAMMING PRACTICES
-    private Frequency[] processFrequencies(InputStream is){
-        try {
-            LinkedList<String[]> stopsList = csvToString(is);
-            Frequency[] stops = new Frequency[stopsList.size()];
-            int i = 0;
-            for (String[] s: stopsList) {
-                stops[i] = new Frequency(s[0], s[1],s[2],s[3]);
-                i++;
-            }
-            return stops;
-
-        }catch (Exception e) {
-            e.printStackTrace();
-            return new Frequency[0];
+    //Coge un @param InputStream de tipo csv y omite la primera linea y lo tokeniza en una array de dos dimensiones
+    private LinkedList<String[]> csvToString(InputStream in){
+        Scanner s = new Scanner(in);
+        LinkedList<String[]> list = new LinkedList();
+        String original = s.nextLine();
+        while(s.hasNextLine()){
+            String temps = s.nextLine();
+            String[] temp = temps.split(",");
+            list.add(temp);
         }
+        return list;
     }
 
-    private Route[] processRoutes(InputStream is){
-        try {
-            LinkedList<String[]> stopsList = csvToString(is);
-            Route[] stops = new Route[stopsList.size()];
-            int i = 0;
-            for (String[] s: stopsList) {
-                stops[i] = new Route(s[0], s[1],s[2],s[3],s[4],s[5],s[6],s[7],s[8]);
-                i++;
-            }
-            return stops;
-
-        }catch (Exception e) {
-            e.printStackTrace();
-            return new Route[0];
-        }
-    }
+    //Apartir de aqui procesamos todos los .txt creando arrays de objetos mucha mierda que no me representa.
 
     private Stop[] processStops(InputStream is){
         try {
@@ -93,16 +76,67 @@ public class DataFetcher {
         }
     }
 
-    private Shape[] processShape(InputStream is){
+    private Agency[] processAgencies(InputStream is){
         try {
-            LinkedList<String[]> stopsList = csvToString(is);
-            Shape[] stops = new Shape[stopsList.size()];
+            LinkedList<String[]> agenciesList = csvToString(is);
+            Agency[] agencies = new Agency[agenciesList.size()];
             int i = 0;
-            for (String[] s: stopsList) {
-                stops[i] = new Shape(s[0], s[1],s[2],s[3],s[4]);
+            for (String[] s: agenciesList) {
+                agencies[i] = new Agency(s[0], s[1],s[2],s[3],s[4],s[5]);
                 i++;
             }
-            return stops;
+            return agencies;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new Agency[0];
+        }
+    }
+
+    private Calendar[] processCalendar(InputStream is){
+        try {
+            LinkedList<String[]> calendarsList = csvToString(is);
+            Calendar[] calendars = new Calendar[calendarsList.size()];
+            int i = 0;
+            for (String[] s: calendarsList) {
+                calendars[i] = new Calendar(s[0], s[1],s[2],s[3],s[4],s[5],s[6],s[7],s[8],s[9]);
+                i++;
+            }
+            return calendars;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new Calendar [0];
+        }
+    }
+
+    private CalendarDate[] processCalendarDate(InputStream is){
+        try {
+            LinkedList<String[]> calendarDatesList = csvToString(is);
+            CalendarDate[] calendarDates = new CalendarDate[calendarDatesList.size()];
+            int i = 0;
+            for (String[] s: calendarDatesList) {
+                calendarDates[i] = new CalendarDate(s[0], s[1],s[2]);
+                i++;
+            }
+            return calendarDates;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new CalendarDate[0];
+        }
+    }
+
+    private Shape[] processShape(InputStream is){
+        try {
+            LinkedList<String[]> shapesList = csvToString(is);
+            Shape[] shapes = new Shape[shapesList.size()];
+            int i = 0;
+            for (String[] s: shapesList) {
+                shapes[i] = new Shape(s[0], s[1],s[2],s[3],s[4]);
+                i++;
+            }
+            return shapes;
 
         }catch (Exception e) {
             e.printStackTrace();
@@ -112,14 +146,14 @@ public class DataFetcher {
 
     private StopTime[] processStopTime(InputStream is){
         try {
-            LinkedList<String[]> stopsList = csvToString(is);
-            StopTime[] stops = new StopTime[stopsList.size()];
+            LinkedList<String[]> stopTimesList = csvToString(is);
+            StopTime[] stopTimes = new StopTime[stopTimesList.size()];
             int i = 0;
-            for (String[] s: stopsList) {
-                stops[i] = new StopTime(s[0], s[1],s[2],s[3],s[4],s[5],s[6],s[7],s[8]);
+            for (String[] s: stopTimesList) {
+                stopTimes[i] = new StopTime(s[0], s[1],s[2],s[3],s[4],s[5],s[6],s[7],s[8]);
                 i++;
             }
-            return stops;
+            return stopTimes;
 
         }catch (Exception e) {
             e.printStackTrace();
@@ -129,14 +163,14 @@ public class DataFetcher {
 
     private Trip[] processTrip(InputStream is){
         try {
-            LinkedList<String[]> stopsList = csvToString(is);
-            Trip[] stops = new Trip[stopsList.size()];
+            LinkedList<String[]> tripsList = csvToString(is);
+            Trip[] trips = new Trip[tripsList.size()];
             int i = 0;
-            for (String[] s: stopsList) {
-                stops[i] = new Trip(s[0], s[1],s[2],s[3],s[4],s[5],s[6]);
+            for (String[] s: tripsList) {
+                trips[i] = new Trip(s[0], s[1],s[2],s[3],s[4],s[5],s[6]);
                 i++;
             }
-            return stops;
+            return trips;
 
         }catch (Exception e) {
             e.printStackTrace();
@@ -144,18 +178,6 @@ public class DataFetcher {
         }
     }
 
-    //Coge un @param InputStream de tipo csv y omite la primera linea y lo tokeniza en una array de dos dimensiones
-    private LinkedList<String[]> csvToString(InputStream in){
-        Scanner s = new Scanner(in);
-        LinkedList<String[]> list = new LinkedList();
-        String original = s.nextLine();
-        while(s.hasNextLine()){
-            String temps = s.nextLine();
-            String[] temp = temps.split(",");
-            list.add(temp);
-        }
-        return list;
-    }
 
     /*
     @Deprecated
