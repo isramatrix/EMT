@@ -215,7 +215,7 @@ public class DataFetcher {
             StopTime[] stopTimes = new StopTime[stopTimesList.size()];
             int i = 0;
             for (String[] s: stopTimesList) {
-                stopTimes[i] = new StopTime(s[0], s[1],s[2],s[3],s[4],s[5],s[6],s[7],s[8]);
+                stopTimes[i] = new StopTime(s[0], s[1],s[2],s[3],s[4],s[5],s[6],s[7],"");
                 i++;
             }
             return stopTimes;
