@@ -1,6 +1,6 @@
 package com.emt.sostenible.data;
 
-public class agency {
+public class Agency {
     private String agency_id;
     private String agency_name;
     private String agency_url;
@@ -8,7 +8,7 @@ public class agency {
     private String agency_lang;
     private String agency_phone;
 
-    public agency(String agency_id, String agency_name, String agency_url, String agency_timezone, String agency_lang, String agency_phone) {
+    public Agency(String agency_id, String agency_name, String agency_url, String agency_timezone, String agency_lang, String agency_phone) {
         this.agency_id = agency_id;
         this.agency_name = agency_name;
         this.agency_url = agency_url;

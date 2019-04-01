@@ -1,6 +1,6 @@
 package com.emt.sostenible.data;
 
-public class shape {
+public class Shape {
 
     private String shape_id;
     private String shape_pt_lat;
@@ -8,7 +8,7 @@ public class shape {
     private String shape_pt_sequence;
     private String shape_dist_traveled;
 
-    public shape(String shape_id, String shape_pt_lat, String shape_pt_lon, String shape_pt_sequence, String shape_dist_traveled) {
+    public Shape(String shape_id, String shape_pt_lat, String shape_pt_lon, String shape_pt_sequence, String shape_dist_traveled) {
         this.shape_id = shape_id;
         this.shape_pt_lat = shape_pt_lat;
         this.shape_pt_lon = shape_pt_lon;

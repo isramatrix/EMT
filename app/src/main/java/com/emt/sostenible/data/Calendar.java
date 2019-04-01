@@ -1,6 +1,6 @@
 package com.emt.sostenible.data;
 
-public class calendar {
+public class Calendar {
     private String service_id;
     private String monday;
     private String tuesday;
@@ -12,7 +12,7 @@ public class calendar {
     private String start_date;
     private String end_date;
 
-    public calendar(String service_id, String monday, String tuesday, String wednesday, String thursday, String friday, String saturday, String sunday, String start_date, String end_date) {
+    public Calendar(String service_id, String monday, String tuesday, String wednesday, String thursday, String friday, String saturday, String sunday, String start_date, String end_date) {
         this.service_id = service_id;
         this.monday = monday;
         this.tuesday = tuesday;
