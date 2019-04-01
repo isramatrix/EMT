@@ -53,7 +53,9 @@ public class DataFetcher {
 
     }
 
-    private JSONObject Converter( InputStream input)
+
+    @Deprecated
+    private JSONObject converter( InputStream input)
     {
         try {
             StringBuilder stBuild = new StringBuilder();
