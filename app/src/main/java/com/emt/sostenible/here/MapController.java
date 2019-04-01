@@ -2,6 +2,10 @@ package com.emt.sostenible.here;
 
 import android.app.Activity;
 import android.location.Location;
+import android.R.drawable;
+import android.widget.ImageView;
+import android.media.Image;
+
 
 import com.emt.sostenible.R;
 import com.here.android.mpa.common.GeoCoordinate;
@@ -10,7 +14,11 @@ import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapFragment;
 import com.here.android.mpa.mapping.MapMarker;
 
+
+
 import java.io.File;
+
+import static com.emt.sostenible.R.drawable.ic_person_pin_circle_black_24dp;
 
 public class MapController {
 
@@ -74,11 +82,17 @@ public class MapController {
         mapRouting.setOnCalculateRouteFinished(map);
     }
 
-    public void addMarker(Location loct){
+
+    //Añadir marcador de persona pasandole Location
+    public void addPersona(Location loct){
 
         //Generar marcador
         GeoCoordinate aux = new GeoCoordinate(loct.getLatitude(),loct.getLongitude());
         MapMarker marca = new MapMarker(aux);
+        //Modificar icono
+        marca.setDescription("Estoy aqui");
+//        Image icono;
+//        marca.setIcon();
 
         // Añadir marcador
         map.addMapObject(marca);
