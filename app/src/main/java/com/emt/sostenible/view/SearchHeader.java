@@ -76,6 +76,7 @@ public class SearchHeader extends LinearLayout {
         list.add("Valladolid");
         list.add("Valverde");
 
+
         // TODO: Inflate locations instead strings on autocomplete list.
         //destination.setAdapter( new ArrayAdapter<>(getContext(), list));
     }
