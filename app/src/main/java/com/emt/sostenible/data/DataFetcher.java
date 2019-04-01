@@ -44,6 +44,20 @@ public class DataFetcher {
         }
 
     }
+    //Coge un @param InputStream de tipo csv y omite la primera linea y lo tokeniza en una array de dos dimensiones
+    private LinkedList<String[]> csvToString(InputStream in){
+        Scanner s = new Scanner(in);
+        LinkedList<String[]> list = new LinkedList();
+        String original = s.nextLine();
+        while(s.hasNextLine()){
+            String temps = s.nextLine();
+            String[] temp = temps.split(",");
+            list.add(temp);
+        }
+        return list;
+    }
+
+    //Apartir de aqui procesamos todos los .txt creando arrays de objetos mucha mierda que no me representa.
 
     private Stop[] processStops(InputStream is){
         try {
@@ -115,14 +129,14 @@ public class DataFetcher {
 
     private Shape[] processShape(InputStream is){
         try {
-            LinkedList<String[]> stopsList = csvToString(is);
-            Shape[] stops = new Shape[stopsList.size()];
+            LinkedList<String[]> shapesList = csvToString(is);
+            Shape[] shapes = new Shape[shapesList.size()];
             int i = 0;
-            for (String[] s: stopsList) {
-                stops[i] = new Shape(s[0], s[1],s[2],s[3],s[4]);
+            for (String[] s: shapesList) {
+                shapes[i] = new Shape(s[0], s[1],s[2],s[3],s[4]);
                 i++;
             }
-            return stops;
+            return shapes;
 
         }catch (Exception e) {
             e.printStackTrace();
@@ -132,14 +146,14 @@ public class DataFetcher {
 
     private StopTime[] processStopTime(InputStream is){
         try {
-            LinkedList<String[]> stopsList = csvToString(is);
-            StopTime[] stops = new StopTime[stopsList.size()];
+            LinkedList<String[]> stopTimesList = csvToString(is);
+            StopTime[] stopTimes = new StopTime[stopTimesList.size()];
             int i = 0;
-            for (String[] s: stopsList) {
-                stops[i] = new StopTime(s[0], s[1],s[2],s[3],s[4],s[5],s[6],s[7],s[8]);
+            for (String[] s: stopTimesList) {
+                stopTimes[i] = new StopTime(s[0], s[1],s[2],s[3],s[4],s[5],s[6],s[7],s[8]);
                 i++;
             }
-            return stops;
+            return stopTimes;
 
         }catch (Exception e) {
             e.printStackTrace();
@@ -149,14 +163,14 @@ public class DataFetcher {
 
     private Trip[] processTrip(InputStream is){
         try {
-            LinkedList<String[]> stopsList = csvToString(is);
-            Trip[] stops = new Trip[stopsList.size()];
+            LinkedList<String[]> tripsList = csvToString(is);
+            Trip[] trips = new Trip[tripsList.size()];
             int i = 0;
-            for (String[] s: stopsList) {
-                stops[i] = new Trip(s[0], s[1],s[2],s[3],s[4],s[5],s[6]);
+            for (String[] s: tripsList) {
+                trips[i] = new Trip(s[0], s[1],s[2],s[3],s[4],s[5],s[6]);
                 i++;
             }
-            return stops;
+            return trips;
 
         }catch (Exception e) {
             e.printStackTrace();
@@ -164,18 +178,6 @@ public class DataFetcher {
         }
     }
 
-    //Coge un @param InputStream de tipo csv y omite la primera linea y lo tokeniza en una array de dos dimensiones
-    private LinkedList<String[]> csvToString(InputStream in){
-        Scanner s = new Scanner(in);
-        LinkedList<String[]> list = new LinkedList();
-        String original = s.nextLine();
-        while(s.hasNextLine()){
-            String temps = s.nextLine();
-            String[] temp = temps.split(",");
-            list.add(temp);
-        }
-        return list;
-    }
 
     /*
     @Deprecated
