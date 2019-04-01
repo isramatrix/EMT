@@ -1,6 +1,6 @@
 package com.emt.sostenible.data;
 
-public class Stops {
+public class Stop{
 
    private String stop_id;
     private String stop_code;
@@ -13,7 +13,7 @@ public class Stops {
     private String location_type;
     private String parent_station;
 
-    public Stops(String stop_id, String stop_code, String stop_name, String stop_desc, String stop_lat, String stop_lon, String zone_id, String stop_url, String location_type, String parent_station) {
+    public Stop(String stop_id, String stop_code, String stop_name, String stop_desc, String stop_lat, String stop_lon, String zone_id, String stop_url, String location_type, String parent_station) {
         this.stop_id = stop_id;
         this.stop_code = stop_code;
         this.stop_name = stop_name;

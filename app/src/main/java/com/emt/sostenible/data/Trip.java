@@ -1,6 +1,6 @@
 package com.emt.sostenible.data;
 
-public class Trips {
+public class Trip {
 
     private String route_id;
     private String service;
@@ -11,7 +11,7 @@ public class Trips {
     private String shape_id;
 
 
-    public Trips(String route_id, String service, String trip_id, String trip_headsign, String direction_id, String block_id, String shape_id) {
+    public Trip(String route_id, String service, String trip_id, String trip_headsign, String direction_id, String block_id, String shape_id) {
         this.route_id = route_id;
         this.service = service;
         this.trip_id = trip_id;
