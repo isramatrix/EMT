@@ -43,7 +43,7 @@ public class DataFetcher {
             "json/Texts/shapes.txt",
             "json/Texts/stop_times.txt",
             "json/Texts/stops.txt",
-            "json/Texts/trips"
+            "json/Texts/trips.txt"
         };
         for(int i = 0; i < ficheros.length; i++){
             try {
