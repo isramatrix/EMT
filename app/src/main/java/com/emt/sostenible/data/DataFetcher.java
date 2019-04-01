@@ -3,10 +3,15 @@ package com.emt.sostenible.data;
 import android.content.Context;
 import android.util.ArrayMap;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Scanner;
+import org.json.*;
+
 
 public class DataFetcher {
 
@@ -18,9 +23,10 @@ public class DataFetcher {
     public DataFetcher(final Context context)
     {
         try {
-            context.getAssets().open("json/localizacionParadas.json");
+            InputStream is = context.getAssets().open("json/localizacionParadas.json");
 
-        } catch (IOException e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

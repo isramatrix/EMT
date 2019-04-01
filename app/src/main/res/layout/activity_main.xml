@@ -37,7 +37,6 @@
             android:gravity="center_vertical"
             android:padding="10dp"
             android:text="EMT Verde"
-            android:textAlignment="textStart"
             android:textSize="24sp"
             android:textStyle="bold" />
 

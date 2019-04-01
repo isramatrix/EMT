@@ -1,9 +1,11 @@
 package com.emt.sostenible.here;
 
 import android.app.Activity;
+import android.content.Context;
 import android.location.Location;
 
 import com.emt.sostenible.R;
+import com.emt.sostenible.data.DataFetcher;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.OnEngineInitListener;
 import com.here.android.mpa.mapping.Map;
@@ -19,8 +21,11 @@ public class MapController {
     // map fragment embedded in this activity
     private final MapFragment mapFragment;
 
+    private final Context context;
+
     public MapController(Activity context)
     {
+        this.context = context.getBaseContext();
         // Search for the map fragment to finish setup by calling init().
         mapFragment = (MapFragment) context.getFragmentManager().findFragmentById(R.id.mapfragment);
 
@@ -51,6 +56,10 @@ public class MapController {
                 }
             });
         }
+
+        DataFetcher da = new DataFetcher(this.context);
+
+
     }
 
     public void setCenter(Location location)
