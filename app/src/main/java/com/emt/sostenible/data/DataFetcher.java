@@ -43,7 +43,13 @@ public class DataFetcher {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        try {
+            JSONArray features = paradas.getJSONArray("features");
+            JSONArray coordinates = features.getJSONObject(0).getJSONObject("geometry").getJSONArray("coordinates");
+            System.out.println(coordinates.toString());
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
 
     }
 
