@@ -24,6 +24,9 @@ public class DataFetcher {
     private static Parada[] listaParadas;
     private static JSONObject paradas;
 
+    private static JSONObject Convertido ;
+
+
     public DataFetcher(final Context context)
     {
         try {
@@ -41,6 +44,28 @@ public class DataFetcher {
             e.printStackTrace();
         }
 
+
+    }
+
+    private JSONObject Converter( InputStream input)
+    {
+        try {
+            StringBuilder stBuild = new StringBuilder();
+            Scanner sc = new Scanner(input);
+            while(sc.hasNextLine()){
+                stBuild.append(sc.nextLine());
+            }
+            sc.close();
+            input.close();
+            String result = stBuild.toString();
+            Convertido = new JSONObject(result);
+
+            return Convertido;
+        }   catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return Convertido;
+        }
 
     }
 
