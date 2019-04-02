@@ -30,8 +30,24 @@ public class DataFetcher {
     private static CalendarDate[] calendarDates;
     private static Trip[]         trips;
 
+    //Implementing a singleton class
+    private static DataFetcher dataFetcher;
+    private static Context context;
 
-    public DataFetcher(final Context context)
+    /**
+     * Implementa un singleton llamado data fetcher
+     * @param contexto usado la primera vez que este se llama para crear el contexto y cargar cosas
+     * @return la unica instancia existente de data fetcher
+     */
+    public static DataFetcher getDataFetcher(final Context contexto){
+        if(dataFetcher == null){
+            context = contexto;
+            dataFetcher = new DataFetcher(context);
+        }
+        return dataFetcher;
+    }
+
+    private DataFetcher(final Context context)
     {
         //Nombre de los ficheros a usar
         String[] ficheros = {
@@ -73,8 +89,8 @@ public class DataFetcher {
                 e.printStackTrace();
             }
         }
-
     }
+
     //Coge un @param InputStream de tipo csv y omite la primera linea y lo tokeniza en una array de dos dimensiones
     private LinkedList<String[]> csvToString(InputStream in){
         Scanner s = new Scanner(in);
