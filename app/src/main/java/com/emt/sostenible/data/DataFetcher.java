@@ -150,7 +150,6 @@ public class DataFetcher {
                 i++;
             }
             return stops;
-
         }catch (Exception e) {
             e.printStackTrace();
             return new Stop[0];
@@ -158,38 +157,47 @@ public class DataFetcher {
     }
 
     public static Stop[] getStops() {
+        if(stops == null) dataFetcher.loadStops();
         return stops;
     }
 
     public static StopTime[] getStopTimes() {
+        if(stopTimes == null) dataFetcher.loadStopTimes();
         return stopTimes;
     }
 
     public static Frequency[] getFrequencies() {
+        if(frequencies == null) dataFetcher.loadFrequencies();
         return frequencies;
     }
 
     public static Route[] getRoutes() {
+        if(routes == null) dataFetcher.loadRoutes();
         return routes;
     }
 
     public static Shape[] getShapes() {
+        if(shapes == null) dataFetcher.loadShapes();
         return shapes;
     }
 
     public static Agency[] getAgencies() {
+        if(agencies == null) dataFetcher.loadAgencies();
         return agencies;
     }
 
     public static Calendar[] getCalendars() {
+        if(calendars == null) dataFetcher.loadCalendars();
         return calendars;
     }
 
     public static CalendarDate[] getCalendarDates() {
+        if(calendarDates == null) dataFetcher.loadCalendarDates();
         return calendarDates;
     }
 
     public static Trip[] getTrips() {
+        if(trips == null) dataFetcher.loadTrips();
         return trips;
     }
 
