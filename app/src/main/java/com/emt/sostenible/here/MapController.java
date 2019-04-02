@@ -62,7 +62,7 @@ public class MapController {
                 }
             });
             try {
-                DataFetcher.getDataFetcher(context.getBaseContext());
+                DataFetcher.getDataFetcher(context.getBaseContext()).loadStops();
             }catch(Exception e){
                 e.printStackTrace();
             }

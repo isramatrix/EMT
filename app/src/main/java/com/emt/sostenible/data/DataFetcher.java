@@ -33,29 +33,7 @@ public class DataFetcher {
     //Implementing a singleton class
     private static DataFetcher dataFetcher;
     private static Context context;
-
-    /**
-     * Implementa un singleton llamado data fetcher
-     * @param contexto usado la primera vez que este se llama para crear el contexto y cargar cosas, ignorado el resto de veces
-     * @return la unica instancia existente de data fetcher
-     */
-    public static DataFetcher getDataFetcher(final Context contexto) throws Exception {
-        if(dataFetcher == null && contexto == null) throw new Exception("Please put a valid context to create a new data fetcher");
-        else if(dataFetcher == null && contexto != null){
-            context = contexto;
-            dataFetcher = new DataFetcher(context);
-        }
-        return dataFetcher;
-    }
-
-    public static DataFetcher getDataFetcher() throws Exception {
-        return getDataFetcher(null);
-    }
-
-    private DataFetcher(final Context context)
-    {
-        //Nombre de los ficheros a usar
-        String[] ficheros = {
+    private String[] ficheros = {
             "json/Texts/agency.txt",
             "json/Texts/calendar.txt",
             "json/Texts/calendar_dates.txt",
@@ -65,36 +43,87 @@ public class DataFetcher {
             "json/Texts/stop_times.txt",
             "json/Texts/stops.txt",
             "json/Texts/trips.txt"
-        };
-        for(int i = 0; i < ficheros.length; i++){
-            try {
-                InputStream is = context.getAssets().open(ficheros[i]);
-                switch(i){
-                    case 0: agencies =
-                            processAgencies(is);    break;
-                    case 1: calendars =
-                            processCalendar(is);    break;
-                    case 2: calendarDates =
-                            processCalendarDate(is);break;
-                    case 3: frequencies =
-                            processFrequencies(is); break;
-                    case 4: routes =
-                            processRoutes(is);      break;
-                    case 5: shapes =
-                            processShape(is);       break;
-                    case 6: stopTimes =
-                            processStopTime(is);    break;
-                    case 7: stops =
-                            processStops(is);       break;
-                    case 8: trips =
-                            processTrip(is);        break;
-                }
-                is.close();
-            }catch (IOException e) {
-                e.printStackTrace();
+    };
+    /**
+     * Implementa un singleton llamado data fetcher
+     * @param contexto usado la primera vez que este se llama para crear el contexto y cargar cosas, ignorado el resto de veces
+     * @return la unica instancia existente de data fetcher
+     */
+    public static DataFetcher getDataFetcher(final Context contexto) throws Exception {
+        if(dataFetcher == null && contexto == null) throw new Exception("Please put a valid context to create a new data fetcher");
+        else if(dataFetcher == null && contexto != null){
+            context = contexto;
+            dataFetcher = new DataFetcher();
+        }
+        return dataFetcher;
+    }
+
+    public static DataFetcher getDataFetcher() throws Exception {
+        return getDataFetcher();
+    }
+
+    public boolean loadAgencies(){
+        return load(0);
+    }
+    public boolean loadCalendars(){
+        return load(1);
+    }
+
+    public boolean loadCalendarDates(){
+        return load(2);
+    }
+    public boolean loadFrequencies(){
+        return load(3);
+    }
+    public boolean loadRoutes(){
+        return load(4);
+    }
+    public boolean loadShapes(){
+        return load(5);
+    }
+    public boolean loadStopTimes(){
+        return load(6);
+    }
+    public boolean loadStops(){
+        return load(7);
+    }
+    public boolean loadTrips(){
+        return load(8);
+    }
+
+
+    private boolean load(int index){
+        try{
+            InputStream is = context.getAssets().open(ficheros[index]);
+            switch(index){
+                case 0: agencies =
+                        processAgencies(is);    break;
+                case 1: calendars =
+                        processCalendar(is);    break;
+                case 2: calendarDates =
+                        processCalendarDate(is);break;
+                case 3: frequencies =
+                        processFrequencies(is); break;
+                case 4: routes =
+                        processRoutes(is);      break;
+                case 5: shapes =
+                        processShape(is);       break;
+                case 6: stopTimes =
+                        processStopTime(is);    break;
+                case 7: stops =
+                        processStops(is);       break;
+                case 8: trips =
+                        processTrip(is);        break;
             }
+            is.close();
+            return true;
+        }catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
     }
+
+    private DataFetcher() {}
 
     //Coge un @param InputStream de tipo csv y omite la primera linea y lo tokeniza en una array de dos dimensiones
     private LinkedList<String[]> csvToString(InputStream in){
