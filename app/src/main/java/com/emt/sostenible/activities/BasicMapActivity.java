@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.emt.sostenible.R;
+import com.emt.sostenible.data.DataFetcher;
 import com.emt.sostenible.here.MapController;
 import com.emt.sostenible.here.MapGeocoder;
 import com.emt.sostenible.here.MapRouting;
@@ -63,6 +64,12 @@ public class BasicMapActivity extends Activity {
 
             if (location != null) {
                 map.setCenter(location);
+                map.addPersona(location);
+
+                //Necesitamos pasarle una array list de TransitStopObject
+                map.AddParadas(DataFetcher.getStops());
+
+
             }
         }
 
