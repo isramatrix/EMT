@@ -36,15 +36,20 @@ public class DataFetcher {
 
     /**
      * Implementa un singleton llamado data fetcher
-     * @param contexto usado la primera vez que este se llama para crear el contexto y cargar cosas
+     * @param contexto usado la primera vez que este se llama para crear el contexto y cargar cosas, ignorado el resto de veces
      * @return la unica instancia existente de data fetcher
      */
-    public static DataFetcher getDataFetcher(final Context contexto){
-        if(dataFetcher == null){
+    public static DataFetcher getDataFetcher(final Context contexto) throws Exception {
+        if(dataFetcher == null && contexto == null) throw new Exception("Please put a valid context to create a new data fetcher");
+        else if(dataFetcher == null && contexto != null){
             context = contexto;
             dataFetcher = new DataFetcher(context);
         }
         return dataFetcher;
+    }
+
+    public static DataFetcher getDataFetcher() throws Exception {
+        return getDataFetcher(null);
     }
 
     private DataFetcher(final Context context)

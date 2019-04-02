@@ -61,7 +61,11 @@ public class MapController {
                     }
                 }
             });
-            DataFetcher da = new DataFetcher(context.getBaseContext());
+            try {
+                DataFetcher.getDataFetcher(context.getBaseContext());
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
 
     }
