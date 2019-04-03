@@ -4,25 +4,16 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.emt.sostenible.R;
+import com.emt.sostenible.data.DataFetcher;
+import com.emt.sostenible.here.EMTRoutePlanner;
 import com.emt.sostenible.here.MapController;
-import com.emt.sostenible.here.MapGeocoder;
-import com.emt.sostenible.here.MapRouting;
 import com.emt.sostenible.logic.LocationService;
 import com.emt.sostenible.view.SearchHeader;
 import com.here.android.mpa.common.GeoCoordinate;
-import com.here.android.mpa.routing.RouteOptions;
-import com.here.android.mpa.search.ErrorCode;
-import com.here.android.mpa.search.GeocodeResult;
-import com.here.android.mpa.search.ResultListener;
-
-import java.util.List;
 
 public class BasicMapActivity extends Activity {
 
@@ -39,19 +30,14 @@ public class BasicMapActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         map = new MapController(this);
         searchHeader = findViewById(R.id.routing_view);
         locationService = LocationService.getInstance(this);
 
-        searchHeader.onDestinationChanged(new SearchHeader.OnTextChangedListener() {
-            @Override
-            public void changed(String text) {
-                System.out.println(text);
-                searchHeader.inflateAutoCompleteDestination(null);
-            }
-        });
-            }
+        new DataFetcher(this);
+
+        searchHeader.setOnSearchButtonClicked(searchRouteTo());
+    }
 
     /**
      *
@@ -65,25 +51,25 @@ public class BasicMapActivity extends Activity {
                 map.setCenter(location);
             }
         }
+    }
 
-        MapRouting mp = new MapRouting(Color.YELLOW,
-                new GeoCoordinate(41, 0),
-                new GeoCoordinate(40, 0),
-                new GeoCoordinate(40, -1),
-                new GeoCoordinate(40, -2),
-                new GeoCoordinate(39, -2)
-        );
+    private SearchHeader.OnSearchButtonListener searchRouteTo()
+    {
+        return new SearchHeader.OnSearchButtonListener() {
+            @Override
+            public void onClick(String text, SearchHeader.SearchType searchType) {
 
-        MapRouting mp2 = new MapRouting(Color.RED,
-                new GeoCoordinate(41, -2),
-                new GeoCoordinate(41, -1),
-                new GeoCoordinate(40, -1),
-                new GeoCoordinate(39, -1),
-                new GeoCoordinate(39, -0.4)
-        );
+                Location actualLocation = LocationService.getInstance(null).getActualLocation();
 
-        map.addRoute(mp2);
-        map.addRoute(mp);
+                EMTRoutePlanner routePlan = new EMTRoutePlanner(searchType, 2,
+                        new GeoCoordinate(actualLocation.getLatitude()-0.01, actualLocation.getLongitude()-0.04),
+                        new GeoCoordinate(actualLocation.getLatitude(), actualLocation.getLongitude()-0.01)
+                );
+                searchHeader.visibilityHeader(false);
+
+                routePlan.traceWithColor(map, Color.RED);
+            }
+        };
     }
 
     /**

@@ -2,24 +2,26 @@ package com.emt.sostenible.view;
 
 import android.animation.Animator;
 import android.content.Context;
-import android.media.Image;
-import android.os.Parcel;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewAnimationUtils;
-import android.view.autofill.AutofillValue;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchHeader extends LinearLayout {
+
+    public enum SearchType { FASTEST, DIRECT, GREENEST }
+
+    private SearchType searchType;
 
     private AutoCompleteTextView destination;
 
@@ -69,6 +71,12 @@ public class SearchHeader extends LinearLayout {
         locationButton = (ImageButton) l2.getChildAt(2);
 
         routeType = (RadioGroup) l2.getChildAt(1);
+        ((RadioButton) routeType.getChildAt(0)).setChecked(true);
+        ((RadioButton) routeType.getChildAt(0)).setOnClickListener(setSearchType(SearchType.FASTEST));
+        ((RadioButton) routeType.getChildAt(1)).setOnClickListener(setSearchType(SearchType.DIRECT));
+        ((RadioButton) routeType.getChildAt(2)).setOnClickListener(setSearchType(SearchType.GREENEST));
+
+        searchType = SearchType.FASTEST;
     }
 
     public void inflateAutoCompleteDestination(List<String> list)
@@ -96,11 +104,10 @@ public class SearchHeader extends LinearLayout {
         });
     }
 
-
-    public void visibilityHeader(boolean visible)
+    public void visibilityHeader(final boolean visible)
     {
-        int x = visible ? searchButton.getRight() : backButton.getLeft();
-        int y = visible ? searchButton.getBottom() : backButton.getBottom();
+        int x = searchButton.getRight();
+        int y = searchButton.getBottom();
 
         int opened = (int) Math.hypot(getWidth(), getHeight());
 
@@ -108,8 +115,34 @@ public class SearchHeader extends LinearLayout {
         int endRadius = visible ? opened : 0;
 
         Animator anim = ViewAnimationUtils.createCircularReveal(this, x, y, startRadius, endRadius);
-        setVisibility(visible ? VISIBLE : INVISIBLE);
+        anim.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                if (visible) setVisibility(VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (!visible) setVisibility(INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) { }
+            @Override
+            public void onAnimationRepeat(Animator animation) { }
+        });
         anim.start();
+    }
+
+    public void setOnSearchButtonClicked(final OnSearchButtonListener listener)
+    {
+        searchButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClick(destination.getText().toString(), searchType);
+                visibilityHeader(false);
+            }
+        });
     }
 
 
@@ -123,8 +156,23 @@ public class SearchHeader extends LinearLayout {
         };
     }
 
+    private OnClickListener setSearchType(final SearchType s)
+    {
+        return new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchType = s;
+            }
+        };
+    }
+
     public interface OnTextChangedListener
     {
         void changed(String text);
+    }
+
+    public interface OnSearchButtonListener
+    {
+        void onClick(String text, SearchType searchType);
     }
 }
