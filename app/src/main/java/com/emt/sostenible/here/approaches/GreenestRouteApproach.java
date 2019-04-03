@@ -23,7 +23,8 @@ class GreenestRouteApproach extends RouteApproach {
     protected List<Route> filter(List<RouteResult> routeResult)
     {
         List<Route> routeList = new ArrayList<>();
-        for(int i = 0; i < routes && i < routeResult.size(); i++) routeList.add(routeResult.get(i).getRoute());
+        for(int i = 0; i < routes && i < routeResult.size(); i++)
+            routeList.add(routeResult.get(i).getRoute());
         return routeList;
 
         // TODO: Filter by params to get the greenest result.

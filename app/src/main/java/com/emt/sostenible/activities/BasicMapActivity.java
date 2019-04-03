@@ -53,15 +53,6 @@ public class BasicMapActivity extends Activity {
                 map.setCenter(location);
 
                 map.addPersona(location);
-
-                //Necesitamos pasarle una array list de TransitStopObject
-                try {
-                    map.AddParadas(DataFetcher.getDataFetcher(null).getStops());
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-
-
             }
         }
     }
