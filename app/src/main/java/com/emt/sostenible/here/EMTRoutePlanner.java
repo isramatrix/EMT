@@ -91,8 +91,8 @@ public final class EMTRoutePlanner {
             @Override
             public void read(List<MapRoute> routes) {
                 map.addRoutes(routes);
-                map.addMarker(origin.getLatitude(), origin.getLongitude());
-                map.addMarker(destine.getLatitude(), destine.getLongitude());
+                map.createParada(origin.getLatitude(), origin.getLongitude());
+                map.createParada(destine.getLatitude(), destine.getLongitude());
             }
         });
     }

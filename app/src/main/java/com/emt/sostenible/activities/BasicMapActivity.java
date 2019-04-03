@@ -38,8 +38,6 @@ public class BasicMapActivity extends Activity {
         searchHeader = findViewById(R.id.routing_view);
         locationService = LocationService.getInstance(this);
 
-        new DataFetcher(this);
-
         searchHeader.setOnSearchButtonClicked(searchRouteTo());
     }
 
