@@ -51,7 +51,7 @@ public class BasicMapActivity extends Activity {
 
             if (location != null) {
                 map.setCenter(location);
-                /*
+
                 map.addPersona(location);
 
                 //Necesitamos pasarle una array list de TransitStopObject
@@ -61,7 +61,7 @@ public class BasicMapActivity extends Activity {
                     e.printStackTrace();
                 }
 
-*/
+
             }
         }
     }

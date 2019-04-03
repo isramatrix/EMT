@@ -138,7 +138,7 @@ public class MapController {
         try {
             Image image = new Image();
             //Añadir png aqui
-            image.setImageResource(R.drawable.bus_emt_low_res);
+            image.setImageResource(R.drawable.bus_emt);
             marca = new MapMarker(aux);
             marca.setIcon(image);
             marca.setDescription("Parada");
@@ -161,7 +161,6 @@ public class MapController {
             lat = Double.parseDouble(parada.getStop_lat());
             longi = Double.parseDouble(parada.getStop_lon());
             paradas.addMarker(createParada(lat,longi));
-
         }
         map.addClusterLayer(paradas);
 
