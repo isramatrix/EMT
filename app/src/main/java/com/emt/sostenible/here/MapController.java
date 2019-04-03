@@ -76,14 +76,7 @@ public class MapController {
                         // Set the zoom level to the average between min and max
                         map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 1.5);
                         map.setMapScheme(Map.Scheme.NORMAL_DAY);
-                        try {
-                            DataFetcher temp = DataFetcher.getDataFetcher(MapController.context);
-                            temp.loadStops();
-                            //Necesitamos pasarle una array list de TransitStopObject
-                            AddParadas(temp.getStops());
-                        }catch(Exception e){
-                            e.printStackTrace();
-                        }
+                        initializeStops();
 
                     } else {
                         System.out.println("ERROR: Cannot initialize Map Fragment");
@@ -184,8 +177,16 @@ public class MapController {
     public Stop[] obtListaP(){
         Stop paradas[] = DataFetcher.getStops();
         return paradas;
+    }
 
-
-
+    private void initializeStops(){
+        try {
+            DataFetcher temp = DataFetcher.getDataFetcher(MapController.context);
+            temp.loadStops();
+            //Necesitamos pasarle una array list de TransitStopObject
+            AddParadas(temp.getStops());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }
