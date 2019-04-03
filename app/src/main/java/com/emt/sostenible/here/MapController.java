@@ -11,6 +11,8 @@ import com.emt.sostenible.R;
 import com.emt.sostenible.data.DataFetcher;
 import com.emt.sostenible.data.Route;
 import com.emt.sostenible.data.Stop;
+import com.emt.sostenible.here.geocoder.String2GeoParser;
+import com.emt.sostenible.logic.LocationService;
 import com.here.android.mpa.cluster.ClusterLayer;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.Identifier;
@@ -29,6 +31,10 @@ import com.here.android.mpa.mapping.TransitDatabase;
 import com.here.android.mpa.mapping.TransitLineObject;
 import com.here.android.mpa.routing.CoreRouter;
 import com.here.android.mpa.routing.RoutePlan;
+import com.here.android.mpa.search.ErrorCode;
+import com.here.android.mpa.search.GeocodeRequest2;
+import com.here.android.mpa.search.GeocodeResult;
+import com.here.android.mpa.search.ResultListener;
 
 
 import java.io.File;
@@ -101,6 +107,11 @@ public class MapController {
     }
 
     public void addRoutes(List<MapRoute> routes) { for (MapRoute r : routes) addRoute(r); }
+
+    public void searchPlaces(String regex, String2GeoParser.ParseCompletedListener listener)
+    {
+        new String2GeoParser(regex, map.getCenter()).parse(listener);
+    }
 
     /**
      *  Añadir marcador de persona pasandole Location

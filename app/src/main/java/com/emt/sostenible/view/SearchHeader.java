@@ -8,14 +8,17 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.widget.AutoCompleteTextView;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.here.android.mpa.common.GeoCoordinate;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SearchHeader extends LinearLayout {
 
@@ -34,6 +37,8 @@ public class SearchHeader extends LinearLayout {
     private ImageButton locationButton;
 
     private RadioGroup routeType;
+
+    private Map<String, GeoCoordinate> locations;
 
     public SearchHeader(Context context) {
         super(context);
@@ -77,31 +82,16 @@ public class SearchHeader extends LinearLayout {
         ((RadioButton) routeType.getChildAt(2)).setOnClickListener(setSearchType(SearchType.GREENEST));
 
         searchType = SearchType.FASTEST;
+        locations = new HashMap<>();
     }
 
-    public void inflateAutoCompleteDestination(List<String> list)
+    public void inflateAutoCompleteDestination(Map<String, GeoCoordinate> locations)
     {
-        list = new ArrayList<>();
-        list.add("Valencia");
-        list.add("Valladolid");
-        list.add("Valverde");
-
+        System.out.println(locations.keySet());
+        this.locations = locations;
 
         // TODO: Inflate locations instead strings on autocomplete list.
         //destination.setAdapter( new ArrayAdapter<>(getContext(), list));
-    }
-
-    public void onDestinationChanged(final OnTextChangedListener onTextChangedListener) {
-        destination.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                onTextChangedListener.changed(s.toString());
-            }
-            @Override
-            public void afterTextChanged(Editable s) { }
-        });
     }
 
     public void visibilityHeader(final boolean visible)
@@ -134,17 +124,43 @@ public class SearchHeader extends LinearLayout {
         anim.start();
     }
 
+    /**
+     * Sets an action to perform when destination text of the header has changed.
+     * @param onTextChangedListener action to perform.
+     */
+    public void setOnDestinationChanged(final OnTextChangedListener onTextChangedListener) {
+        destination.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                onTextChangedListener.changed(s.toString());
+            }
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+    }
+
+    /**
+     * Sets an action to perform when search button was pressed.
+     * @param listener
+     */
     public void setOnSearchButtonClicked(final OnSearchButtonListener listener)
     {
         searchButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClick(destination.getText().toString(), searchType);
-                visibilityHeader(false);
+                if (locations.size() == 0) return;
+
+                GeoCoordinate location = (GeoCoordinate) locations.values().toArray()[0];
+                if (location != null) {
+                    listener.onClick(location, searchType);
+                    origin.setText("");
+                    visibilityHeader(false);
+                }
             }
         });
     }
-
 
     private OnClickListener closeListener()
     {
@@ -173,6 +189,6 @@ public class SearchHeader extends LinearLayout {
 
     public interface OnSearchButtonListener
     {
-        void onClick(String text, SearchType searchType);
+        void onClick(GeoCoordinate text, SearchType searchType);
     }
 }
