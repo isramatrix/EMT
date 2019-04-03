@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.emt.sostenible.R;
 import com.emt.sostenible.data.DataFetcher;
 import com.emt.sostenible.here.EMTRoutePlanner;
+import com.emt.sostenible.data.DataFetcher;
 import com.emt.sostenible.here.MapController;
 import com.emt.sostenible.logic.LocationService;
 import com.emt.sostenible.view.SearchHeader;
@@ -49,6 +53,17 @@ public class BasicMapActivity extends Activity {
 
             if (location != null) {
                 map.setCenter(location);
+                /*
+                map.addPersona(location);
+
+                //Necesitamos pasarle una array list de TransitStopObject
+                try {
+                    map.AddParadas(DataFetcher.getDataFetcher(null).getStops());
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+
+*/
             }
         }
     }
