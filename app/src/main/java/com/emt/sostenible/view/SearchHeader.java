@@ -2,24 +2,29 @@ package com.emt.sostenible.view;
 
 import android.animation.Animator;
 import android.content.Context;
-import android.media.Image;
-import android.os.Parcel;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewAnimationUtils;
-import android.view.autofill.AutofillValue;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.here.android.mpa.common.GeoCoordinate;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SearchHeader extends LinearLayout {
+
+    public enum SearchType { FASTEST, DIRECT, GREENEST }
+
+    private SearchType searchType;
 
     private AutoCompleteTextView destination;
 
@@ -32,6 +37,8 @@ public class SearchHeader extends LinearLayout {
     private ImageButton locationButton;
 
     private RadioGroup routeType;
+
+    private Map<String, GeoCoordinate> locations;
 
     public SearchHeader(Context context) {
         super(context);
@@ -69,21 +76,59 @@ public class SearchHeader extends LinearLayout {
         locationButton = (ImageButton) l2.getChildAt(2);
 
         routeType = (RadioGroup) l2.getChildAt(1);
+        ((RadioButton) routeType.getChildAt(0)).setChecked(true);
+        ((RadioButton) routeType.getChildAt(0)).setOnClickListener(setSearchType(SearchType.FASTEST));
+        ((RadioButton) routeType.getChildAt(1)).setOnClickListener(setSearchType(SearchType.DIRECT));
+        ((RadioButton) routeType.getChildAt(2)).setOnClickListener(setSearchType(SearchType.GREENEST));
+
+        searchType = SearchType.FASTEST;
+        locations = new HashMap<>();
     }
 
-    public void inflateAutoCompleteDestination(List<String> list)
+    public void inflateAutoCompleteDestination(Map<String, GeoCoordinate> locations)
     {
-        list = new ArrayList<>();
-        list.add("Valencia");
-        list.add("Valladolid");
-        list.add("Valverde");
-
+        System.out.println(locations.keySet());
+        this.locations = locations;
 
         // TODO: Inflate locations instead strings on autocomplete list.
         //destination.setAdapter( new ArrayAdapter<>(getContext(), list));
     }
 
-    public void onDestinationChanged(final OnTextChangedListener onTextChangedListener) {
+    public void visibilityHeader(final boolean visible)
+    {
+        int x = searchButton.getRight();
+        int y = searchButton.getBottom();
+
+        int opened = (int) Math.hypot(getWidth(), getHeight());
+
+        int startRadius = visible ? 0 : opened;
+        int endRadius = visible ? opened : 0;
+
+        Animator anim = ViewAnimationUtils.createCircularReveal(this, x, y, startRadius, endRadius);
+        anim.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                if (visible) setVisibility(VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (!visible) setVisibility(INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) { }
+            @Override
+            public void onAnimationRepeat(Animator animation) { }
+        });
+        anim.start();
+    }
+
+    /**
+     * Sets an action to perform when destination text of the header has changed.
+     * @param onTextChangedListener action to perform.
+     */
+    public void setOnDestinationChanged(final OnTextChangedListener onTextChangedListener) {
         destination.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -96,22 +141,26 @@ public class SearchHeader extends LinearLayout {
         });
     }
 
-
-    public void visibilityHeader(boolean visible)
+    /**
+     * Sets an action to perform when search button was pressed.
+     * @param listener
+     */
+    public void setOnSearchButtonClicked(final OnSearchButtonListener listener)
     {
-        int x = visible ? searchButton.getRight() : backButton.getLeft();
-        int y = visible ? searchButton.getBottom() : backButton.getBottom();
+        searchButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (locations.size() == 0) return;
 
-        int opened = (int) Math.hypot(getWidth(), getHeight());
-
-        int startRadius = visible ? 0 : opened;
-        int endRadius = visible ? opened : 0;
-
-        Animator anim = ViewAnimationUtils.createCircularReveal(this, x, y, startRadius, endRadius);
-        setVisibility(visible ? VISIBLE : INVISIBLE);
-        anim.start();
+                GeoCoordinate location = (GeoCoordinate) locations.values().toArray()[0];
+                if (location != null) {
+                    listener.onClick(location, searchType);
+                    origin.setText("");
+                    visibilityHeader(false);
+                }
+            }
+        });
     }
-
 
     private OnClickListener closeListener()
     {
@@ -123,8 +172,23 @@ public class SearchHeader extends LinearLayout {
         };
     }
 
+    private OnClickListener setSearchType(final SearchType s)
+    {
+        return new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchType = s;
+            }
+        };
+    }
+
     public interface OnTextChangedListener
     {
         void changed(String text);
+    }
+
+    public interface OnSearchButtonListener
+    {
+        void onClick(GeoCoordinate text, SearchType searchType);
     }
 }

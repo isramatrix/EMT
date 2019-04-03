@@ -2,22 +2,44 @@ package com.emt.sostenible.here;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.PointF;
 import android.location.Location;
-import android.widget.ImageView;
 
-
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import com.emt.sostenible.R;
 import com.emt.sostenible.data.DataFetcher;
+import com.emt.sostenible.data.Route;
+import com.emt.sostenible.data.Stop;
+import com.emt.sostenible.here.geocoder.String2GeoParser;
+import com.emt.sostenible.logic.LocationService;
+import com.here.android.mpa.cluster.ClusterLayer;
 import com.here.android.mpa.common.GeoCoordinate;
+import com.here.android.mpa.common.Identifier;
+import com.here.android.mpa.common.Image;
 import com.here.android.mpa.common.OnEngineInitListener;
+import com.here.android.mpa.common.ViewObject;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapFragment;
+import com.here.android.mpa.mapping.MapGesture;
 import com.here.android.mpa.mapping.MapMarker;
-import com.here.android.mpa.common.Image;
-
+import com.here.android.mpa.mapping.MapObject;
+import com.here.android.mpa.mapping.MapProxyObject;
+import com.here.android.mpa.mapping.MapRoute;
+import com.here.android.mpa.mapping.MapTransitLayer;
+import com.here.android.mpa.mapping.TransitDatabase;
+import com.here.android.mpa.mapping.TransitLineObject;
+import com.here.android.mpa.routing.CoreRouter;
+import com.here.android.mpa.routing.RoutePlan;
+import com.here.android.mpa.search.ErrorCode;
+import com.here.android.mpa.search.GeocodeRequest2;
+import com.here.android.mpa.search.GeocodeResult;
+import com.here.android.mpa.search.ResultListener;
 
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapController {
 
@@ -28,11 +50,7 @@ public class MapController {
     private final MapFragment mapFragment;
     private MapMarker marca;
 
-    private final Context context;
-
-    public MapController(Activity context)
-    {
-        this.context = context.getBaseContext();
+    public MapController(Activity context) {
         // Search for the map fragment to finish setup by calling init().
         mapFragment = (MapFragment) context.getFragmentManager().findFragmentById(R.id.mapfragment);
 
@@ -55,27 +73,26 @@ public class MapController {
 
                         // Set the zoom level to the average between min and max
                         map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 1.5);
-                        map.setMapScheme(Map.Scheme.NORMAL_DAY);
+                        map.setMapScheme(Map.Scheme.NORMAL_DAY_TRANSIT);
 
                     } else {
                         System.out.println("ERROR: Cannot initialize Map Fragment");
                     }
                 }
             });
+            try {
+                DataFetcher.getDataFetcher(context.getBaseContext()).loadStops();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
-
-        DataFetcher da = new DataFetcher(this.context);
-
-
     }
 
-    public void setCenter(Location location)
-    {
+    public void setCenter(Location location) {
         map.setCenter(new GeoCoordinate(location.getLatitude(), location.getLongitude(), 0.0), Map.Animation.LINEAR);
     }
 
-    public void setCenter(com.here.android.mpa.search.Location location)
-    {
+    public void setCenter(com.here.android.mpa.search.Location location) {
         map.setCenter(new GeoCoordinate(location.getCoordinate().getLatitude(),
                 location.getCoordinate().getLongitude(), 0.0), Map.Animation.LINEAR);
     }
@@ -84,44 +101,88 @@ public class MapController {
         map.setZoomLevel(zoom);
     }
 
-    public void addRoute(MapRouting mapRouting)
+    public void addRoute(MapRoute route)
     {
-        for (GeoCoordinate c : mapRouting.getGeoCoordinates())
-            map.addMapObject(new MapMarker(c));
-
-        mapRouting.setOnCalculateRouteFinished(map);
+        map.addMapObject(route);
     }
 
+    public void addRoutes(List<MapRoute> routes) { for (MapRoute r : routes) addRoute(r); }
 
-    //Añadir marcador de persona pasandole Location
+    public void searchPlaces(String regex, String2GeoParser.ParseCompletedListener listener)
+    {
+        new String2GeoParser(regex, map.getCenter()).parse(listener);
+    }
+
+    /**
+     *  Añadir marcador de persona pasandole Location
+     */
     public void addPersona(Location loct){
 
         if (marca != null) map.removeMapObject(marca);
 
         //Generar marcador
-        GeoCoordinate aux = new GeoCoordinate(loct.getLatitude(),loct.getLongitude());
+
         //Modificar icon
         try {
+            GeoCoordinate aux = new GeoCoordinate(loct.getLatitude(), loct.getLongitude());
             Image image = new Image();
             //Añadir png aqui
-            image.setImageResource(R.drawable.placeholder);
-            marca = new MapMarker(aux, image);
+            image.setImageResource(R.drawable.location_azul_low_res);
+            marca = new MapMarker(aux);
+            marca.setIcon(image);
             marca.setDescription("Estoy aqui");
             map.addMapObject(marca);
+
 
         } catch (Exception e) {
             System.out.print("NOT FOUND IMAGE");
         }
 
 
+    }
+
+    public MapMarker createParada(double lat, double longi) {
+        GeoCoordinate aux = new GeoCoordinate(lat,longi);
+        //Generar marcador
+
+        //Modificar icon
+        try {
+            Image image = new Image();
+            //Añadir png aqui
+            image.setImageResource(R.drawable.bus_emt);
+            marca = new MapMarker(aux);
+            marca.setIcon(image);
+            marca.setDescription("Parada");
+
+
+
+
+        } catch (Exception e) {
+            System.out.print("NOT FOUND IMAGE");
+        }
+        return marca;
 
     }
 
-//    public void AddParadaBus(Location loct){
-//        if(parada != null) map.removeMapObject(parada);
-//        GeoCoordinate aux = new GeoCoordinate(loct.getLatitude(),loct.getLongitude());
-//
-//
-//
-//    }
+    public void AddParadas(Stop[] lista){
+        ClusterLayer paradas = new ClusterLayer();
+        double lat = 0;
+        double longi = 0;
+        for(Stop parada:lista){
+            lat = Double.parseDouble(parada.getStop_lat());
+            longi = Double.parseDouble(parada.getStop_lon());
+            paradas.addMarker(createParada(lat,longi));
+        }
+        map.addClusterLayer(paradas);
+
+
+    }
+
+    public Stop[] obtListaP(){
+        Stop paradas[] = DataFetcher.getStops();
+        return paradas;
+
+
+
+    }
 }

@@ -361,7 +361,7 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
                 assert (delta == -1 || delta == 1);
                 node.height = Math.max(leftHeight, rightHeight) + 1;
                 if (!insert) {
-                    break; // the height hasn't changed, so rebalancing is done!
+                    break; // the height hasn't onClick, so rebalancing is done!
                 }
             }
         }
