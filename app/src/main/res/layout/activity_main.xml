@@ -215,14 +215,13 @@
         android:visibility="visible">
 
         <TextView
-            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_directions_bus_black_24dp"
             android:drawablePadding="10dp"
             android:fontFamily="@font/abeezee"
             android:padding="5dp"
-            android:text="Estimació de la ruta" />
+            android:text="Estimación de la ruta" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -240,7 +239,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/abeezee"
                     android:padding="5dp"
-                    android:text="Inici:" />
+                    android:text="Salida:" />
 
                 <TextView
                     android:id="@+id/textView4"
@@ -248,7 +247,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/abeezee"
                     android:padding="5dp"
-                    android:text="12:36"
+                    android:text="12:00"
                     android:textAlignment="center"
                     android:textSize="30sp"
                     android:textStyle="bold" />
@@ -281,7 +280,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/abeezee"
                     android:padding="5dp"
-                    android:text="Arribada:" />
+                    android:text="Llegada:" />
 
                 <TextView
                     android:id="@+id/textView5"
