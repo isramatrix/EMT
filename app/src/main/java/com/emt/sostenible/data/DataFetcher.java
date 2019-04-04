@@ -68,7 +68,6 @@ public class DataFetcher {
     public boolean loadCalendars(){
         return load(1);
     }
-
     public boolean loadCalendarDates(){
         return load(2);
     }

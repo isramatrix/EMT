@@ -50,8 +50,10 @@ public class MapController {
     // map fragment embedded in this activity
     private final MapFragment mapFragment;
     private MapMarker marca;
+    private static Context context;
 
     public MapController(Activity context) {
+        this.context = context.getBaseContext();
         // Search for the map fragment to finish setup by calling init().
         mapFragment = (MapFragment) context.getFragmentManager().findFragmentById(R.id.mapfragment);
 
@@ -74,18 +76,14 @@ public class MapController {
 
                         // Set the zoom level to the average between min and max
                         map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 1.5);
-                        map.setMapScheme(Map.Scheme.NORMAL_DAY_TRANSIT);
+                        map.setMapScheme(Map.Scheme.NORMAL_DAY);
+                        initializeStops();
 
                     } else {
                         System.out.println("ERROR: Cannot initialize Map Fragment");
                     }
                 }
             });
-            try {
-                DataFetcher.getDataFetcher(context.getBaseContext()).loadStops();
-            }catch(Exception e){
-                e.printStackTrace();
-            }
         }
     }
 
@@ -179,15 +177,21 @@ public class MapController {
             paradas.addMarker(createParada(lat,longi));
         }
         map.addClusterLayer(paradas);
-
-
     }
 
     public Stop[] obtListaP(){
         Stop paradas[] = DataFetcher.getStops();
         return paradas;
+    }
 
-
-
+    private void initializeStops(){
+        try {
+            DataFetcher temp = DataFetcher.getDataFetcher(MapController.context);
+            temp.loadStops();
+            //Necesitamos pasarle una array list de TransitStopObject
+            AddParadas(temp.getStops());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

@@ -57,13 +57,6 @@ public class BasicMapActivity extends Activity {
                 map.setCenter(location);
 
                 map.addPersona(location);
-
-                //Necesitamos pasarle una array list de TransitStopObject
-                try {
-                    map.AddParadas(DataFetcher.getDataFetcher(null).getStops());
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
             }
         }
     }
@@ -174,6 +167,5 @@ public class BasicMapActivity extends Activity {
     @Override
     public void onBackPressed() {
         searchHeader.visibilityHeader(false);
-        routeInfo.show(false);
     }
 }
