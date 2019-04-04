@@ -40,6 +40,8 @@ public class SearchHeader extends LinearLayout {
 
     private Map<String, GeoCoordinate> locations;
 
+    private Map<String, GeoCoordinate> origins;
+
     public SearchHeader(Context context) {
         super(context);
     }
@@ -73,7 +75,7 @@ public class SearchHeader extends LinearLayout {
         searchButton = (ImageButton) l0.getChildAt(2);
 
         origin = (AutoCompleteTextView) l1.getChildAt(1);
-        locationButton = (ImageButton) l2.getChildAt(2);
+        locationButton = (ImageButton) l1.getChildAt(2);
 
         routeType = (RadioGroup) l2.getChildAt(1);
         ((RadioButton) routeType.getChildAt(0)).setChecked(true);
@@ -89,6 +91,15 @@ public class SearchHeader extends LinearLayout {
     {
         System.out.println(locations.keySet());
         this.locations = locations;
+
+        // TODO: Inflate locations instead strings on autocomplete list.
+        //destination.setAdapter( new ArrayAdapter<>(getContext(), list));
+    }
+
+    public void inflateAutoCompleteOrigins(Map<String, GeoCoordinate> locations)
+    {
+        System.out.println(locations.keySet());
+        this.origins = locations;
 
         // TODO: Inflate locations instead strings on autocomplete list.
         //destination.setAdapter( new ArrayAdapter<>(getContext(), list));
@@ -142,6 +153,23 @@ public class SearchHeader extends LinearLayout {
     }
 
     /**
+     * Sets an action to perform when origins text of the header has changed.
+     * @param onTextChangedListener action to perform.
+     */
+    public void setOnOriginChanged(final OnTextChangedListener onTextChangedListener) {
+        origin.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                onTextChangedListener.changed(s.toString());
+            }
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+    }
+
+    /**
      * Sets an action to perform when search button was pressed.
      * @param listener
      */
@@ -152,9 +180,12 @@ public class SearchHeader extends LinearLayout {
             public void onClick(View v) {
                 if (locations.size() == 0) return;
 
-                GeoCoordinate location = (GeoCoordinate) locations.values().toArray()[0];
-                if (location != null) {
-                    listener.onClick(location, searchType);
+                GeoCoordinate destine = (GeoCoordinate) locations.values().toArray()[0];
+                GeoCoordinate origens = (GeoCoordinate) origins.values().toArray()[0];
+
+                if (destine != null) {
+                    listener.onClick(destine, origens, searchType);
+                    destination.setText("");
                     origin.setText("");
                     visibilityHeader(false);
                 }
@@ -189,6 +220,6 @@ public class SearchHeader extends LinearLayout {
 
     public interface OnSearchButtonListener
     {
-        void onClick(GeoCoordinate text, SearchType searchType);
+        void onClick(GeoCoordinate dest, GeoCoordinate ori, SearchType searchType);
     }
 }
