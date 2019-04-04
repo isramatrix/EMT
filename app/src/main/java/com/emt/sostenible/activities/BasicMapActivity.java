@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import java.util.List;
 import com.android.volley.Request;
@@ -56,6 +58,10 @@ public class BasicMapActivity extends Activity {
         searchHeader.setOnSearchButtonClicked(searchRouteTo());
         searchHeader.setOnDestinationChanged(destinationTextChangedListener());
         searchHeader.setOnOriginChanged(originTextChangedListener());
+
+
+        //destination.setThreshold(1);
+        //destination.setDropDownAnchor(R.layout.activity_main);
 
     }
 
