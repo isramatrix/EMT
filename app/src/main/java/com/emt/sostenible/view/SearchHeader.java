@@ -5,6 +5,8 @@ import android.content.Context;
 import android.location.Location;
 import android.os.Looper;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
+import android.graphics.Color;
+import android.location.Location;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -17,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.emt.sostenible.R;
+import com.emt.sostenible.logic.LocationService;
 import com.emt.sostenible.R;
 import com.emt.sostenible.data.DataFetcher;
 import com.emt.sostenible.logic.LocationService;
@@ -50,6 +54,8 @@ public class SearchHeader extends LinearLayout {
     private Map<String, GeoCoordinate> locations;
 
     private Map<String, GeoCoordinate> origins;
+
+    private boolean locationEnabled;
 
     public SearchHeader(Context context) {
         super(context);
@@ -85,6 +91,21 @@ public class SearchHeader extends LinearLayout {
 
         origin = (AutoCompleteTextView) l1.getChildAt(1);
         locationButton = (ImageButton) l1.getChildAt(2);
+
+        locationButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationEnabled = !locationEnabled;
+                Map<String, GeoCoordinate> map = new HashMap<>();
+                Location location = LocationService.getInstance(null).getActualLocation();
+                GeoCoordinate geo = new GeoCoordinate(location.getLatitude(), location.getLongitude());
+                origin.setHint(locationEnabled ? "Mi ubicación" : "Eligir origen");
+                origin.setEnabled(!locationEnabled);
+                origin.setHintTextColor(locationEnabled ? Color.BLUE : Color.GRAY);
+                map.put("Mi ubicación", geo);
+                origins = map;
+            }
+        });
 
         routeType = (RadioGroup) l2.getChildAt(1);
         ((RadioButton) routeType.getChildAt(0)).setChecked(true);
@@ -136,11 +157,11 @@ public class SearchHeader extends LinearLayout {
         System.out.println(locations.keySet());
         this.origins = locations;
 
+        System.out.println(locations.keySet());
+
         // TODO: Inflate locations instead strings on autocomplete list.
         //destination.setAdapter( new ArrayAdapter<>(getContext(), list));
     }
-
-
 
     public void visibilityHeader(final boolean visible)
     {
@@ -216,6 +237,7 @@ public class SearchHeader extends LinearLayout {
             @Override
             public void onClick(View v) {
                 if (locations.size() == 0) return;
+                if (origins.size() == 0) return;
 
                 GeoCoordinate destine = (GeoCoordinate) locations.values().toArray()[0];
                 GeoCoordinate origens = (GeoCoordinate) origins.values().toArray()[0];

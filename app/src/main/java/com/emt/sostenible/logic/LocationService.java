@@ -50,10 +50,7 @@ public class LocationService {
         this.activity = activity;
         this.context = activity.getApplicationContext();
 
-        if (askForPermissions()) {
-            System.out.println("INITIALIZING");
-           initializeLocationGranter();
-        }
+        if (askForPermissions()) initializeLocationGranter();
 
         listenerList = new ArrayList<>();
     }
@@ -100,13 +97,10 @@ public class LocationService {
 
     private void initializeLocationGranter() throws SecurityException
     {
-        System.out.println("REQUESTING LISTENER");
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                System.out.println(location);
-                for (Listener l : listenerList)
-                    l.allocate(location.getLatitude(), location.getLongitude());
+                for (Listener l : listenerList) l.allocate(location.getLatitude(), location.getLongitude());
                 actualLocation = location;
             }
 
@@ -118,7 +112,7 @@ public class LocationService {
 
             @Override
             public void onProviderEnabled(String provider) {
-
+                // TODO: Missing implementation
             }
 
             @Override

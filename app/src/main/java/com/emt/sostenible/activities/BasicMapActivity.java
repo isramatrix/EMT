@@ -1,7 +1,6 @@
 package com.emt.sostenible.activities;
 import java.util.ArrayList;
 import android.app.Activity;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +15,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
 import com.emt.sostenible.R;
 import com.emt.sostenible.data.DataFetcher;
 import com.emt.sostenible.here.EMTRoutePlanner;
@@ -42,9 +42,6 @@ public class BasicMapActivity extends Activity {
 
     private RouteInfo routeInfo;
 
-
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,10 +55,6 @@ public class BasicMapActivity extends Activity {
         searchHeader.setOnSearchButtonClicked(searchRouteTo());
         searchHeader.setOnDestinationChanged(destinationTextChangedListener());
         searchHeader.setOnOriginChanged(originTextChangedListener());
-
-
-        //destination.setThreshold(1);
-        //destination.setDropDownAnchor(R.layout.activity_main);
 
     }
 
@@ -112,7 +105,7 @@ public class BasicMapActivity extends Activity {
                 searchHeader.visibilityHeader(false);
 
                 // Traces the resulted path.
-                routePlan.traceWithHours(map, routeInfo);
+                routePlan.trace(map, routeInfo);
             }
         };
     }

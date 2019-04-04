@@ -53,6 +53,11 @@ public class RouteInfo extends LinearLayout {
         this.arrival.setText(arrival);
     }
 
+    public void setLine(String line)
+    {
+        // TODO: Implement line show.
+    }
+
     public void show(boolean visible)
     {
         final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getLayoutParams();
