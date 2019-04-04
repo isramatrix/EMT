@@ -78,7 +78,7 @@ public class MapController {
                         map = mapFragment.getMap();
 
                         // Set the map center to the Vancouver region (no animation)
-                        map.setCenter(new GeoCoordinate(39.4178969, -0.4115509, 0.0), Map.Animation.NONE);
+                        map.setCenter(new GeoCoordinate(39.470059, -0.376105, 0.0), Map.Animation.NONE);
 
                         // Set the zoom level to the average between min and max
                         map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 1.5);
@@ -183,21 +183,21 @@ public class MapController {
             paradas.addMarker(createParada(lat,longi));
         }
 
-        Image image = new Image();
-        try {
-            image.setImageResource(R.drawable.bus_emt);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //Image image = new Image();
+        //try {
+        //    image.setImageResource(R.drawable.bus_emt);
+        //} catch (IOException e) {
+        //    e.printStackTrace();
+        //}
 
         //ImageClusterStyle cStyle = new ImageClusterStyle(image);
-        BasicClusterStyle cStyle = new BasicClusterStyle();
-        cStyle.setFillColor(Color.RED);
+        //BasicClusterStyle cStyle = new BasicClusterStyle();
+        //cStyle.setFillColor(Color.RED);
+        //ClusterTheme cTheme = new ClusterTheme();
+        //cTheme.setStyleForDensityRange(new ClusterDensityRange(ClusterDensityRange.MINIMUM_CLUSTER_DENSITY, Integer.MAX_VALUE), cStyle);
 
-        ClusterTheme cTheme = new ClusterTheme();
-        cTheme.setStyleForDensityRange(new ClusterDensityRange(ClusterDensityRange.MINIMUM_CLUSTER_DENSITY, Integer.MAX_VALUE), cStyle);
 
-        paradas.setTheme(cTheme);
+        //paradas.setTheme(cTheme);
 
         map.addClusterLayer(paradas);
 
