@@ -165,7 +165,6 @@ public class MapController {
 
 
 
-
         } catch (Exception e) {
             System.out.print("NOT FOUND IMAGE");
         }
@@ -218,7 +217,7 @@ public class MapController {
             e.printStackTrace();
         }
         try{
-            //DataFetcher.getDataFetcher().loadEstations();
+            DataFetcher.getDataFetcher().loadEstations();
             //DataFetcher.getEstations();
         } catch (Exception e) {
             e.printStackTrace();

@@ -71,7 +71,10 @@ public class BasicMapActivity extends Activity {
 
                 map.setCenter(location);
                 map.addPersona(location);
+
             }
+            DataFetcher.getEstations();
+
         }
     }
 
