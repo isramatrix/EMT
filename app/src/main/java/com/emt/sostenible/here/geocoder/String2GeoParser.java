@@ -1,5 +1,6 @@
 package com.emt.sostenible.here.geocoder;
 
+import com.here.android.mpa.common.GeoBoundingBox;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.search.ErrorCode;
 import com.here.android.mpa.search.GeocodeRequest2;
@@ -13,12 +14,14 @@ import java.util.Map;
 public class String2GeoParser implements ResultListener<List<GeocodeResult>> {
 
     private ParseCompletedListener listener;
-    private final GeocodeRequest2 request;
+    private GeocodeRequest2 request;
 
     public String2GeoParser(String regex, GeoCoordinate center)
     {
         request = new GeocodeRequest2(regex);
-        request.setSearchArea(center, 50);
+        GeoCoordinate cent = new GeoCoordinate(39.459098, -0.375840);
+        GeoBoundingBox gbox = new GeoBoundingBox(cent, 12000, 12000);
+        request = request.setSearchArea(gbox);
     }
 
     @Override
@@ -28,7 +31,7 @@ public class String2GeoParser implements ResultListener<List<GeocodeResult>> {
 
         for (GeocodeResult res : geocodeResults)
             map.put(
-                    res.getLocation().getAddress().getStreet(),
+                    res.getLocation().getAddress().getText(),
                     new GeoCoordinate(res.getLocation().getCoordinate())
             );
 
@@ -38,6 +41,7 @@ public class String2GeoParser implements ResultListener<List<GeocodeResult>> {
     public void parse(ParseCompletedListener listener)
     {
         this.listener = listener;
+        request.setCollectionSize(4);
         request.execute(this);
     }
 

@@ -17,8 +17,10 @@ import com.here.android.mpa.common.GeoCoordinate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class SearchHeader extends LinearLayout {
 
@@ -89,6 +91,11 @@ public class SearchHeader extends LinearLayout {
 
     public void inflateAutoCompleteDestination(Map<String, GeoCoordinate> locations)
     {
+        List<String> list = new LinkedList<String>();
+        for(String temp : locations.keySet()){
+            list.add(temp);
+        }
+
         System.out.println(locations.keySet());
         this.locations = locations;
 
@@ -104,6 +111,8 @@ public class SearchHeader extends LinearLayout {
         // TODO: Inflate locations instead strings on autocomplete list.
         //destination.setAdapter( new ArrayAdapter<>(getContext(), list));
     }
+
+
 
     public void visibilityHeader(final boolean visible)
     {

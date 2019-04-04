@@ -183,21 +183,21 @@ public class MapController {
             paradas.addMarker(createParada(lat,longi));
         }
 
-        //Image image = new Image();
-        //try {
-        //    image.setImageResource(R.drawable.bus_emt);
-        //} catch (IOException e) {
-        //    e.printStackTrace();
-        //}
+        Image image = new Image();
+        try {
+            image.setImageResource(R.drawable.bus_emt);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        //ImageClusterStyle cStyle = new ImageClusterStyle(image);
+        ImageClusterStyle cStyle = new ImageClusterStyle(image);
         //BasicClusterStyle cStyle = new BasicClusterStyle();
         //cStyle.setFillColor(Color.RED);
-        //ClusterTheme cTheme = new ClusterTheme();
-        //cTheme.setStyleForDensityRange(new ClusterDensityRange(ClusterDensityRange.MINIMUM_CLUSTER_DENSITY, Integer.MAX_VALUE), cStyle);
+        ClusterTheme cTheme = new ClusterTheme();
+        cTheme.setStyleForDensityRange(new ClusterDensityRange(ClusterDensityRange.MINIMUM_CLUSTER_DENSITY, Integer.MAX_VALUE), cStyle);
 
 
-        //paradas.setTheme(cTheme);
+        paradas.setTheme(cTheme);
 
         map.addClusterLayer(paradas);
 
