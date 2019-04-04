@@ -219,7 +219,7 @@ public class MapController {
         }
         try{
             //DataFetcher.getDataFetcher().loadEstations();
-            DataFetcher.getEstations();
+            //DataFetcher.getEstations();
         } catch (Exception e) {
             e.printStackTrace();
         }

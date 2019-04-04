@@ -434,8 +434,9 @@ public class DataFetcher {
 
                     estations[i] = new Estation(name,lon,city,idx,stamp,pol,x,aqi,tz,utime,img);
 
-                    return estations;
+
                 }
+                return estations;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
