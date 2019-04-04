@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.PointF;
 import android.location.Location;
+import android.util.Pair;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ import java.util.List;
 public class MapController {
 
     // map embedded in the map fragment
-    private Map map = null;
+    public static Map map = null;
 
     // map fragment embedded in this activity
     private final MapFragment mapFragment;
@@ -107,6 +108,10 @@ public class MapController {
     }
 
     public void addRoutes(List<MapRoute> routes) { for (MapRoute r : routes) addRoute(r); }
+
+    public void addRoutesWithTime(java.util.Map<MapRoute, Pair<String, String>> map) {
+        for (MapRoute m : map.keySet()) addRoute(m);
+    }
 
     public void searchPlaces(String regex, String2GeoParser.ParseCompletedListener listener)
     {
