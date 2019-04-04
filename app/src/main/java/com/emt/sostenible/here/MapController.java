@@ -217,5 +217,11 @@ public class MapController {
         }catch(Exception e){
             e.printStackTrace();
         }
+        try{
+            //DataFetcher.getDataFetcher().loadEstations();
+            DataFetcher.getEstations();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

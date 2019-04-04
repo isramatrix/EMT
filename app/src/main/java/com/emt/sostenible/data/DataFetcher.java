@@ -39,8 +39,6 @@ public class DataFetcher {
     private static CalendarDate[] calendarDates;
     private static Trip[] trips;
     private static Estation[] estations;
-    private RequestQueue queue;
-   // private List<String> CosasNazis = new ArrayList<String>();
 
 
     //Implementing a singleton class
@@ -113,6 +111,11 @@ public class DataFetcher {
 
     public boolean loadTrips() {
         return load(8);
+    }
+
+    public boolean loadEstations(){
+        estations = obtenerDatosVolley();
+        return true;
     }
 
 
@@ -242,6 +245,10 @@ public class DataFetcher {
     public static Trip[] getTrips() {
         if (trips == null) dataFetcher.loadTrips();
         return trips;
+    }
+    public static Estation[] getEstations(){
+        dataFetcher.loadEstations();
+        return estations;
     }
 
     //BAD BUT FUNCTIONAL CODE, DO NOT LOOK NOR CHANGE
@@ -385,12 +392,12 @@ public class DataFetcher {
 
 
     private Estation[] obtenerDatosVolley() {
+        RequestQueue queue = Volley.newRequestQueue(context);
         String url = "https://api.waqi.info/mapq/bounds/?bounds=39.27223818849068,-0.693511962890625,39.601032583320894,-0.03227233886718751&inc=placeholders&k=_2Y2EvHBxICVocIyNASSJWXmpjdA4+PStSFlY3Yg==&_=1554378570700";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-
                 try {
                             Estation[] estations = new Estation[response.length()];
 
@@ -410,19 +417,6 @@ public class DataFetcher {
                         String img = mJsonObject.getString("img");
 
                         estations[i] = new Estation(name,lon,city,idx,stamp,pol,x,aqi,tz,utime,img);
-
-                        //CosasNazis.add(name);
-                        //CosasNazis.add(lon);
-                        //CosasNazis.add(city);
-                        //CosasNazis.add(idx);
-                        //CosasNazis.add(stamp);
-                        //CosasNazis.add(pol);
-                        //CosasNazis.add(x);
-                        //CosasNazis.add(aqi);
-                        //CosasNazis.add(tz);
-                        //CosasNazis.add(utime);
-                        //CosasNazis.add(img);
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -435,7 +429,6 @@ public class DataFetcher {
             }
         });
         queue.add(request);
-
         return estations;
     }
 }
