@@ -43,7 +43,6 @@ class GreenestRouteApproach extends RouteApproach {
             dynamicPenalty.setTrafficPenaltyMode(Route.TrafficPenaltyMode.AVOID_LONG_TERM_CLOSURES);
 
             System.out.println(r.getConsumption(params, dynamicPenalty).getFirstAvailableConsumptionIndex());
-
         }
 
         // TODO: Filter by params to get the greenest result.
