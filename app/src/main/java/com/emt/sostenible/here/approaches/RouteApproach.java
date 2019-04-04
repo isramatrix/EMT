@@ -1,20 +1,13 @@
 package com.emt.sostenible.here.approaches;
 
-import android.util.Pair;
-
 import com.emt.sostenible.view.SearchHeader;
-import com.here.android.mpa.common.TransitType;
-import com.here.android.mpa.mapping.MapObject;
-import com.here.android.mpa.mapping.MapRoute;
 import com.here.android.mpa.routing.CoreRouter;
 import com.here.android.mpa.routing.Route;
 import com.here.android.mpa.routing.RouteOptions;
 import com.here.android.mpa.routing.RoutePlan;
 import com.here.android.mpa.routing.RouteResult;
-import com.here.android.mpa.routing.RoutingError;
 
 import java.util.List;
-import java.util.Map;
 
 public abstract class RouteApproach {
 
@@ -42,15 +35,7 @@ public abstract class RouteApproach {
 
     public void calculateRoute(RoutePlan routePlan, OnRouteCalculatedListener listener)
     {
-        CoreRouterListenerIterator it = new CoreRouterListenerIterator(this, listener);
-        CoreRouter coreRouter = new CoreRouter();
-        routePlan.setRouteOptions(routeOptions);
-        coreRouter.calculateRoute(routePlan, it);
-    }
-
-    public void calculateRoute(RoutePlan routePlan, OnRouteCalculatedListenerWithTime listener)
-    {
-        CoreRouterListenerIteratorWithTime it = new CoreRouterListenerIteratorWithTime(this, listener);
+        OnRoutesCalculatedListener it = new OnRoutesCalculatedListener(this, listener);
         CoreRouter coreRouter = new CoreRouter();
         routePlan.setRouteOptions(routeOptions);
         coreRouter.calculateRoute(routePlan, it);
@@ -60,13 +45,5 @@ public abstract class RouteApproach {
 
     protected abstract List<Route> filter(List<RouteResult> routeResult);
 
-    public interface OnRouteCalculatedListener
-    {
-        void read(List<MapRoute> route);
-    }
-
-    public interface OnRouteCalculatedListenerWithTime
-    {
-        void read(Map<MapRoute, Pair<String, String>> route);
-    }
+    public interface OnRouteCalculatedListener { void read(List<Route> route); }
 }

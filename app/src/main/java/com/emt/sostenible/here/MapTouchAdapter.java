@@ -43,7 +43,7 @@ public class MapTouchAdapter extends MapGesture.OnGestureListener.OnGestureListe
             if (obj.getBaseType() == ViewObject.Type.PROXY_OBJECT) {
                 MapProxyObject proxyObj = (MapProxyObject) obj;
 
-                if (proxyObj.getType() == MapProxyObject.Type.TRANSIT_STOP) {
+                if (proxyObj.getType() == MapProxyObject.Type.TRANSIT_LINE) {
                     TransitStopObject transitStopObj
                             = (TransitStopObject) proxyObj;
                     TransitStopInfo transitStopInfo

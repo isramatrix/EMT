@@ -89,7 +89,7 @@ public class BasicMapActivity extends Activity {
                 searchHeader.visibilityHeader(false);
 
                 // Traces the resulted path.
-                routePlan.traceWithHours(map, routeInfo);
+                routePlan.trace(map, routeInfo);
             }
         };
     }
