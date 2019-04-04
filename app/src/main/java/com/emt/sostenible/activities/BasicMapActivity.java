@@ -1,20 +1,32 @@
 package com.emt.sostenible.activities;
-
+import java.util.ArrayList;
 import android.app.Activity;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-
+import java.util.List;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.emt.sostenible.R;
 import com.emt.sostenible.data.DataFetcher;
 import com.emt.sostenible.here.EMTRoutePlanner;
 import com.emt.sostenible.here.MapController;
 import com.emt.sostenible.here.geocoder.String2GeoParser;
 import com.emt.sostenible.logic.LocationService;
+import com.emt.sostenible.view.RouteInfo;
 import com.emt.sostenible.view.SearchHeader;
 import com.here.android.mpa.common.GeoCoordinate;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -26,7 +38,10 @@ public class BasicMapActivity extends Activity {
 
     private SearchHeader searchHeader;
 
-    private ImageButton button;
+    private RouteInfo routeInfo;
+
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,10 +50,13 @@ public class BasicMapActivity extends Activity {
 
         map = new MapController(this);
         searchHeader = findViewById(R.id.routing_view);
+        routeInfo = findViewById(R.id.bottom_info);
         locationService = LocationService.getInstance(this);
 
         searchHeader.setOnSearchButtonClicked(searchRouteTo());
-        searchHeader.setOnDestinationChanged(textChangedListener());
+        searchHeader.setOnDestinationChanged(destinationTextChangedListener());
+        searchHeader.setOnOriginChanged(originTextChangedListener());
+
     }
 
     /**
@@ -50,8 +68,8 @@ public class BasicMapActivity extends Activity {
             Location location = locationService.getActualLocation();
 
             if (location != null) {
-                map.setCenter(location);
 
+                map.setCenter(location);
                 map.addPersona(location);
             }
         }
@@ -69,26 +87,28 @@ public class BasicMapActivity extends Activity {
     {
         return new SearchHeader.OnSearchButtonListener() {
             @Override
-            public void onClick(GeoCoordinate destine, SearchHeader.SearchType searchType) {
+            public void onClick(GeoCoordinate destine, GeoCoordinate origin, SearchHeader.SearchType searchType) {
 
                 // Gets the actual location of the user.
                 Location actualLocation =
                         LocationService.getInstance(null).getActualLocation();
 
                 // Converts the location to a GeoCoordinate point.
-                GeoCoordinate origin =
-                        new GeoCoordinate(actualLocation.getLatitude(), actualLocation.getLongitude());
+                if (origin == null)
+                    origin = new GeoCoordinate(actualLocation.getLatitude(),  actualLocation.getLongitude());
 
                 // Initializes and starts the RoutePlanner.
                 EMTRoutePlanner routePlan =
-                        new EMTRoutePlanner(searchType, 2, origin, destine);
+                        new EMTRoutePlanner(searchType, 5, origin, destine);
                 searchHeader.visibilityHeader(false);
 
                 // Traces the resulted path.
-                routePlan.traceWithColor(map, Color.RED);
+                routePlan.traceWithHours(map, routeInfo);
             }
         };
     }
+
+
 
     /**
      * Initializes a lambda class extending OnTextChangedListener interface
@@ -98,12 +118,21 @@ public class BasicMapActivity extends Activity {
      * @see com.emt.sostenible.view.SearchHeader.OnTextChangedListener
      * @return the expected lambda class.
      */
-    private SearchHeader.OnTextChangedListener textChangedListener()
+    private SearchHeader.OnTextChangedListener destinationTextChangedListener()
     {
         return new SearchHeader.OnTextChangedListener() {
             @Override
             public void changed(String text) {
-                if (!text.isEmpty()) map.searchPlaces(text, onRoutesParsed());
+                if (!text.isEmpty()) map.searchPlaces(text, onDestinationRoutesParsed());
+            }
+        };
+    }
+    private SearchHeader.OnTextChangedListener originTextChangedListener()
+    {
+        return new SearchHeader.OnTextChangedListener() {
+            @Override
+            public void changed(String text) {
+                if (!text.isEmpty()) map.searchPlaces(text, onOriginRoutesParsed());
             }
         };
     }
@@ -117,12 +146,21 @@ public class BasicMapActivity extends Activity {
      * @see SearchHeader
      * @return the expectes lambda class.
      */
-    private String2GeoParser.ParseCompletedListener onRoutesParsed()
+    private String2GeoParser.ParseCompletedListener onDestinationRoutesParsed()
     {
         return new String2GeoParser.ParseCompletedListener() {
             @Override
             public void parsed(Map<String, GeoCoordinate> locations) {
                 searchHeader.inflateAutoCompleteDestination(locations);
+            }
+        };
+    }
+    private String2GeoParser.ParseCompletedListener onOriginRoutesParsed()
+    {
+        return new String2GeoParser.ParseCompletedListener() {
+            @Override
+            public void parsed(Map<String, GeoCoordinate> locations) {
+                searchHeader.inflateAutoCompleteOrigins(locations);
             }
         };
     }
@@ -134,6 +172,7 @@ public class BasicMapActivity extends Activity {
     public void onSearchButtonClicked(View view)
     {
         searchHeader.visibilityHeader(true);
+        routeInfo.show(false);
     }
 
     /**

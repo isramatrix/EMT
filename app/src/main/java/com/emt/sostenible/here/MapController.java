@@ -2,9 +2,12 @@ package com.emt.sostenible.here;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PointF;
 import android.location.Location;
+import android.util.Pair;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import com.emt.sostenible.R;
@@ -13,7 +16,11 @@ import com.emt.sostenible.data.Route;
 import com.emt.sostenible.data.Stop;
 import com.emt.sostenible.here.geocoder.String2GeoParser;
 import com.emt.sostenible.logic.LocationService;
+import com.here.android.mpa.cluster.BasicClusterStyle;
+import com.here.android.mpa.cluster.ClusterDensityRange;
 import com.here.android.mpa.cluster.ClusterLayer;
+import com.here.android.mpa.cluster.ClusterTheme;
+import com.here.android.mpa.cluster.ImageClusterStyle;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.Identifier;
 import com.here.android.mpa.common.Image;
@@ -44,7 +51,7 @@ import java.util.List;
 public class MapController {
 
     // map embedded in the map fragment
-    private Map map = null;
+    public static Map map = null;
 
     // map fragment embedded in this activity
     private final MapFragment mapFragment;
@@ -71,7 +78,7 @@ public class MapController {
                         map = mapFragment.getMap();
 
                         // Set the map center to the Vancouver region (no animation)
-                        map.setCenter(new GeoCoordinate(39.4178969, -0.4115509, 0.0), Map.Animation.NONE);
+                        map.setCenter(new GeoCoordinate(39.470059, -0.376105, 0.0), Map.Animation.NONE);
 
                         // Set the zoom level to the average between min and max
                         map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 1.5);
@@ -105,6 +112,10 @@ public class MapController {
     }
 
     public void addRoutes(List<MapRoute> routes) { for (MapRoute r : routes) addRoute(r); }
+
+    public void addRoutesWithTime(java.util.Map<MapRoute, Pair<String, String>> map) {
+        for (MapRoute m : map.keySet()) addRoute(m);
+    }
 
     public void searchPlaces(String regex, String2GeoParser.ParseCompletedListener listener)
     {
@@ -171,7 +182,25 @@ public class MapController {
             longi = Double.parseDouble(parada.getStop_lon());
             paradas.addMarker(createParada(lat,longi));
         }
+
+        //Image image = new Image();
+        //try {
+        //    image.setImageResource(R.drawable.bus_emt);
+        //} catch (IOException e) {
+        //    e.printStackTrace();
+        //}
+
+        //ImageClusterStyle cStyle = new ImageClusterStyle(image);
+        //BasicClusterStyle cStyle = new BasicClusterStyle();
+        //cStyle.setFillColor(Color.RED);
+        //ClusterTheme cTheme = new ClusterTheme();
+        //cTheme.setStyleForDensityRange(new ClusterDensityRange(ClusterDensityRange.MINIMUM_CLUSTER_DENSITY, Integer.MAX_VALUE), cStyle);
+
+
+        //paradas.setTheme(cTheme);
+
         map.addClusterLayer(paradas);
+
     }
 
     public Stop[] obtListaP(){
@@ -186,6 +215,12 @@ public class MapController {
             //Necesitamos pasarle una array list de TransitStopObject
             AddParadas(temp.getStops());
         }catch(Exception e){
+            e.printStackTrace();
+        }
+        try{
+            //DataFetcher.getDataFetcher().loadEstations();
+            //DataFetcher.getEstations();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

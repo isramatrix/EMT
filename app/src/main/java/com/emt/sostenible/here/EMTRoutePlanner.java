@@ -1,13 +1,19 @@
 package com.emt.sostenible.here;
 
+import android.graphics.Color;
+import android.util.Pair;
+
 import com.emt.sostenible.here.approaches.RouteApproach;
+import com.emt.sostenible.view.RouteInfo;
 import com.emt.sostenible.view.SearchHeader;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.mapping.MapRoute;
 import com.here.android.mpa.routing.RoutePlan;
 import com.here.android.mpa.routing.RouteWaypoint;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Creates a petition to the here service which will trace a path
@@ -104,6 +110,20 @@ public final class EMTRoutePlanner {
             public void read(List<MapRoute> routes) {
                 for (MapRoute route : routes) route.setColor(color);
                 map.addRoutes(routes);
+            }
+        });
+    }
+
+    public void traceWithHours(final MapController map, final RouteInfo routeInfo)
+    {
+        routeApproach.calculateRoute(routePlan, new RouteApproach.OnRouteCalculatedListenerWithTime() {
+            @Override
+            public void read(Map<MapRoute, Pair<String, String>> routes) {
+                map.addRoutesWithTime(routes);
+                for (MapRoute route : routes.keySet()) route.setColor(Color.RED);
+                Pair<String, String> pair = (Pair<String, String>) routes.values().toArray()[0];
+                routeInfo.setTimes(pair.first, pair.second);
+                routeInfo.show(true);
             }
         });
     }
