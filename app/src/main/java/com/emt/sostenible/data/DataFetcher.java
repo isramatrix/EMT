@@ -9,6 +9,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 
 import java.io.FileInputStream;
@@ -22,6 +23,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
+
 import org.json.*;
 
 
@@ -393,34 +396,13 @@ public class DataFetcher {
 
     private Estation[] obtenerDatosVolley() {
         RequestQueue queue = Volley.newRequestQueue(context);
+        RequestFuture<JSONArray> future = RequestFuture.newFuture();
         String url = "https://api.waqi.info/mapq/bounds/?bounds=39.27223818849068,-0.693511962890625,39.601032583320894,-0.03227233886718751&inc=placeholders&k=_2Y2EvHBxICVocIyNASSJWXmpjdA4+PStSFlY3Yg==&_=1554378570700";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                try {
-                            Estation[] estations = new Estation[response.length()];
 
-                    for (int i = 0; i < response.length(); i++) {
-
-                        JSONObject mJsonObject = response.getJSONObject(i);
-                        String name = mJsonObject.getString("lat");
-                        String lon = mJsonObject.getString("lon");
-                        String city = mJsonObject.getString("city");
-                        String idx = mJsonObject.getString("idx");
-                        String stamp = mJsonObject.getString("stamp");
-                        String pol = mJsonObject.getString("pol");
-                        String x = mJsonObject.getString("x");
-                        String aqi = mJsonObject.getString("aqi");
-                        String tz = mJsonObject.getString("tz");
-                        String utime = mJsonObject.getString("utime");
-                        String img = mJsonObject.getString("img");
-
-                        estations[i] = new Estation(name,lon,city,idx,stamp,pol,x,aqi,tz,utime,img);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -429,7 +411,38 @@ public class DataFetcher {
             }
         });
         queue.add(request);
-        return estations;
+        try {
+            JSONArray response = future.get();
+
+            try {
+                Estation[] estations = new Estation[response.length()];
+
+                for (int i = 0; i < response.length(); i++) {
+
+                    JSONObject mJsonObject = response.getJSONObject(i);
+                    String name = mJsonObject.getString("lat");
+                    String lon = mJsonObject.getString("lon");
+                    String city = mJsonObject.getString("city");
+                    String idx = mJsonObject.getString("idx");
+                    String stamp = mJsonObject.getString("stamp");
+                    String pol = mJsonObject.getString("pol");
+                    String x = mJsonObject.getString("x");
+                    String aqi = mJsonObject.getString("aqi");
+                    String tz = mJsonObject.getString("tz");
+                    String utime = mJsonObject.getString("utime");
+                    String img = mJsonObject.getString("img");
+
+                    estations[i] = new Estation(name,lon,city,idx,stamp,pol,x,aqi,tz,utime,img);
+
+                    return estations;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        } catch (InterruptedException e) {
+        } catch ( ExecutionException e) {}
+        return null;
     }
 }
 
