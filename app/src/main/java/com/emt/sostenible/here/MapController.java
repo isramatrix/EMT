@@ -56,6 +56,7 @@ public class MapController {
     // map fragment embedded in this activity
     private final MapFragment mapFragment;
     private MapMarker marca;
+    private MapMarker ubiPersona;
     private static Context context;
 
     public MapController(Activity context) {
@@ -127,7 +128,7 @@ public class MapController {
      */
     public void addPersona(Location loct){
 
-        if (marca != null) map.removeMapObject(marca);
+        if (ubiPersona != null) map.removeMapObject(ubiPersona);
 
         //Generar marcador
 
@@ -137,10 +138,10 @@ public class MapController {
             Image image = new Image();
             //Añadir png aqui
             image.setImageResource(R.drawable.location_azul_low_res);
-            marca = new MapMarker(aux);
-            marca.setIcon(image);
-            marca.setDescription("Estoy aqui");
-            map.addMapObject(marca);
+            ubiPersona = new MapMarker(aux);
+            ubiPersona.setIcon(image);
+            ubiPersona.setDescription("Estoy aqui");
+            map.addMapObject(ubiPersona);
 
 
         } catch (Exception e) {

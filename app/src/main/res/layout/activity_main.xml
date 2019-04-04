@@ -34,7 +34,7 @@
             android:fontFamily="@font/abeezee"
             android:gravity="center_vertical"
             android:padding="10dp"
-            android:text="EMT Verde"
+            android:text="Greebus"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -169,7 +169,7 @@
                     android:drawablePadding="10dp"
                     android:fontFamily="@font/abeezee"
                     android:padding="10dp"
-                    android:text="Anar per la via ràpida" />
+                    android:text="Ruta más rápida" />
 
                 <RadioButton
                     android:id="@+id/radioButton5"
@@ -180,7 +180,7 @@
                     android:drawablePadding="10dp"
                     android:fontFamily="@font/abeezee"
                     android:padding="10dp"
-                    android:text="Anar per la via directa" />
+                    android:text="Ruta apta para movilidad reducida" />
 
                 <RadioButton
                     android:id="@+id/radioButton6"
@@ -191,7 +191,7 @@
                     android:drawablePadding="15dp"
                     android:fontFamily="@font/abeezee"
                     android:padding="10dp"
-                    android:text="Anar per la via verda" />
+                    android:text="Ruta más verde" />
             </RadioGroup>
         </LinearLayout>
 
