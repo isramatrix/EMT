@@ -186,5 +186,6 @@ public class BasicMapActivity extends Activity {
     @Override
     public void onBackPressed() {
         searchHeader.visibilityHeader(false);
+        routeInfo.show(false);
     }
 }

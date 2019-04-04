@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EMT</string>
+    <string name="app_name">Greebus</string>
     <string name="title_activity_params">ParamsActivity</string>
     <string name="route_type_text">Elegir el tipo de ruta</string>
 </resources>
