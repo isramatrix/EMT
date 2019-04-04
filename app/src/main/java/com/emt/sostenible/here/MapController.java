@@ -2,10 +2,12 @@ package com.emt.sostenible.here;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PointF;
 import android.location.Location;
 import android.util.Pair;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import com.emt.sostenible.R;
@@ -14,7 +16,11 @@ import com.emt.sostenible.data.Route;
 import com.emt.sostenible.data.Stop;
 import com.emt.sostenible.here.geocoder.String2GeoParser;
 import com.emt.sostenible.logic.LocationService;
+import com.here.android.mpa.cluster.BasicClusterStyle;
+import com.here.android.mpa.cluster.ClusterDensityRange;
 import com.here.android.mpa.cluster.ClusterLayer;
+import com.here.android.mpa.cluster.ClusterTheme;
+import com.here.android.mpa.cluster.ImageClusterStyle;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.Identifier;
 import com.here.android.mpa.common.Image;
@@ -176,7 +182,25 @@ public class MapController {
             longi = Double.parseDouble(parada.getStop_lon());
             paradas.addMarker(createParada(lat,longi));
         }
+
+        Image image = new Image();
+        try {
+            image.setImageResource(R.drawable.bus_emt);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //ImageClusterStyle cStyle = new ImageClusterStyle(image);
+        BasicClusterStyle cStyle = new BasicClusterStyle();
+        cStyle.setFillColor(Color.RED);
+
+        ClusterTheme cTheme = new ClusterTheme();
+        cTheme.setStyleForDensityRange(new ClusterDensityRange(ClusterDensityRange.MINIMUM_CLUSTER_DENSITY, Integer.MAX_VALUE), cStyle);
+
+        paradas.setTheme(cTheme);
+
         map.addClusterLayer(paradas);
+
     }
 
     public Stop[] obtListaP(){
