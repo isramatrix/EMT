@@ -2,50 +2,32 @@ package com.emt.sostenible.here;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PointF;
 import android.location.Location;
 import android.util.Pair;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+
 import com.emt.sostenible.R;
 import com.emt.sostenible.data.DataFetcher;
-import com.emt.sostenible.data.Route;
 import com.emt.sostenible.data.Stop;
 import com.emt.sostenible.here.geocoder.String2GeoParser;
-import com.emt.sostenible.logic.LocationService;
-import com.here.android.mpa.cluster.BasicClusterStyle;
+import com.emt.sostenible.view.RouteInfo;
 import com.here.android.mpa.cluster.ClusterDensityRange;
 import com.here.android.mpa.cluster.ClusterLayer;
 import com.here.android.mpa.cluster.ClusterTheme;
 import com.here.android.mpa.cluster.ImageClusterStyle;
 import com.here.android.mpa.common.GeoCoordinate;
-import com.here.android.mpa.common.Identifier;
 import com.here.android.mpa.common.Image;
 import com.here.android.mpa.common.OnEngineInitListener;
-import com.here.android.mpa.common.ViewObject;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapFragment;
-import com.here.android.mpa.mapping.MapGesture;
 import com.here.android.mpa.mapping.MapMarker;
-import com.here.android.mpa.mapping.MapObject;
-import com.here.android.mpa.mapping.MapProxyObject;
 import com.here.android.mpa.mapping.MapRoute;
-import com.here.android.mpa.mapping.MapTransitLayer;
-import com.here.android.mpa.mapping.TransitDatabase;
-import com.here.android.mpa.mapping.TransitLineObject;
-import com.here.android.mpa.routing.CoreRouter;
-import com.here.android.mpa.routing.RoutePlan;
-import com.here.android.mpa.search.ErrorCode;
-import com.here.android.mpa.search.GeocodeRequest2;
-import com.here.android.mpa.search.GeocodeResult;
-import com.here.android.mpa.search.ResultListener;
+import com.here.android.mpa.routing.Route;
 
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MapController {
@@ -107,15 +89,10 @@ public class MapController {
         map.setZoomLevel(zoom);
     }
 
-    public void addRoute(MapRoute route)
+    public void addRoutes(List<Route> routes, RouteInfo routeInfo)
     {
-        map.addMapObject(route);
-    }
-
-    public void addRoutes(List<MapRoute> routes) { for (MapRoute r : routes) addRoute(r); }
-
-    public void addRoutesWithTime(java.util.Map<MapRoute, Pair<String, String>> map) {
-        for (MapRoute m : map.keySet()) addRoute(m);
+        for (Route r : routes) map.addMapObject(new MapRoute(r));
+        setRouteInfo(routes.get(0), routeInfo);
     }
 
     public void searchPlaces(String regex, String2GeoParser.ParseCompletedListener listener)
@@ -223,5 +200,24 @@ public class MapController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void setRouteInfo(Route route, RouteInfo routeInfo)
+    {
+        Calendar calendar = Calendar.getInstance();
+
+        String departure = String.format("%02d", calendar.get(Calendar.HOUR))
+                + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
+
+        calendar.add(Calendar.SECOND, route.getTtaIncludingTraffic(Route.WHOLE_ROUTE).getDuration());
+        String arrival = String.format("%02d", calendar.get(Calendar.HOUR))
+                + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
+        routeInfo.setTimes(departure, arrival);
+
+
+        String line = route.getRouteElements().getElements().get(0).getTransitElement().getLineName();
+        routeInfo.setLine(line);
+
+
     }
 }

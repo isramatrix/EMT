@@ -1,19 +1,9 @@
 package com.emt.sostenible.activities;
-import java.util.ArrayList;
 import android.app.Activity;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
-import java.util.List;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+
 import com.emt.sostenible.R;
 import com.emt.sostenible.data.DataFetcher;
 import com.emt.sostenible.here.EMTRoutePlanner;
@@ -23,10 +13,6 @@ import com.emt.sostenible.logic.LocationService;
 import com.emt.sostenible.view.RouteInfo;
 import com.emt.sostenible.view.SearchHeader;
 import com.here.android.mpa.common.GeoCoordinate;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -106,7 +92,7 @@ public class BasicMapActivity extends Activity {
                 searchHeader.visibilityHeader(false);
 
                 // Traces the resulted path.
-                routePlan.traceWithHours(map, routeInfo);
+                routePlan.trace(map, routeInfo);
             }
         };
     }

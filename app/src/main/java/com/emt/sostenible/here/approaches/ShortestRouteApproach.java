@@ -27,6 +27,5 @@ class ShortestRouteApproach extends RouteApproach {
         List<Route> routeList = new ArrayList<>();
         for(int i = 0; i < routes && i < routeResult.size(); i++) routeList.add(routeResult.get(i).getRoute());
         return routeList;
-
     }
 }
