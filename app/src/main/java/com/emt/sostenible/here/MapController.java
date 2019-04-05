@@ -114,6 +114,7 @@ public class MapController {
 
         //Generar marcador
 
+
         //Modificar icon
         try {
             GeoCoordinate aux = new GeoCoordinate(loct.getLatitude(), loct.getLongitude());
