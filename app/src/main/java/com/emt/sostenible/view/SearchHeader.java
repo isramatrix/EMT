@@ -2,6 +2,9 @@ package com.emt.sostenible.view;
 
 import android.animation.Animator;
 import android.content.Context;
+import android.location.Location;
+import android.os.Looper;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.graphics.Color;
 import android.location.Location;
 import android.text.Editable;
@@ -9,6 +12,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.widget.ArrayAdapter;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
@@ -17,6 +21,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.emt.sostenible.R;
+import com.emt.sostenible.logic.LocationService;
+import com.emt.sostenible.R;
+import com.emt.sostenible.data.DataFetcher;
 import com.emt.sostenible.logic.LocationService;
 import com.here.android.mpa.common.GeoCoordinate;
 
@@ -113,16 +120,37 @@ public class SearchHeader extends LinearLayout {
 
     public void inflateAutoCompleteDestination(Map<String, GeoCoordinate> locations)
     {
+        Location actualL = LocationService.getInstance(null).getActualLocation();
+        if(actualL == null) {
+            actualL = new Location("");
+            actualL.setLatitude(39.47187);
+            actualL.setLongitude(-0.376368);
+        }
+        GeoCoordinate actualC = new GeoCoordinate(actualL.getLatitude(), actualL.getLongitude());
         List<String> list = new LinkedList<String>();
         for(String temp : locations.keySet()){
-            list.add(temp);
+            if (locations.get(temp).distanceTo(actualC) < 40000)
+                list.add(temp);
         }
 
-        System.out.println(locations.keySet());
+        Looper.prepare();
+
         this.locations = locations;
 
-        // TODO: Inflate locations instead strings on autocomplete list.
-        //destination.setAdapter( new ArrayAdapter<>(getContext(), list));
+        String[] locationArray = list.toArray(new String[list.size()]);
+        System.out.println(locationArray.toString());
+        String[] am = new String[]{"Aragon"};
+        final ArrayAdapter<String> test = new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_list_item_1, am);
+        destination.setThreshold(1);
+
+        post(new Runnable() {
+            @Override
+            public void run() {
+                destination.setAdapter(test);
+                System.out.println("HI");
+            }
+        });
+
     }
 
     public void inflateAutoCompleteOrigins(Map<String, GeoCoordinate> locations)
@@ -260,5 +288,3 @@ public class SearchHeader extends LinearLayout {
         void onClick(GeoCoordinate dest, GeoCoordinate ori, SearchType searchType);
     }
 }
-
-
