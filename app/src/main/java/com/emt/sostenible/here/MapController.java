@@ -2,7 +2,9 @@ package com.emt.sostenible.here;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.location.Location;
+import android.support.v4.util.ArraySet;
 import android.util.Pair;
 
 import java.io.IOException;
@@ -24,11 +26,14 @@ import com.here.android.mpa.mapping.MapFragment;
 import com.here.android.mpa.mapping.MapMarker;
 import com.here.android.mpa.mapping.MapRoute;
 import com.here.android.mpa.routing.Route;
+import com.here.android.mpa.routing.RouteElement;
+import com.here.android.mpa.routing.TransitRouteElement;
 
 
 import java.io.File;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 public class MapController {
 
@@ -91,7 +96,7 @@ public class MapController {
 
     public void addRoutes(List<Route> routes, RouteInfo routeInfo)
     {
-        for (Route r : routes) map.addMapObject(new MapRoute(r));
+        for (Route r : routes) map.addMapObject(new MapRoute(r).setColor(Color.RED));
         setRouteInfo(routes.get(0), routeInfo);
     }
 
@@ -108,6 +113,7 @@ public class MapController {
         if (ubiPersona != null) map.removeMapObject(ubiPersona);
 
         //Generar marcador
+
 
         //Modificar icon
         try {
@@ -214,10 +220,12 @@ public class MapController {
                 + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
         routeInfo.setTimes(departure, arrival);
 
+        Set<String> lines = new ArraySet<>();
+        for (RouteElement transit : route.getRouteElements().getElements())
+            if (transit.getTransitElement() != null) lines.add(transit.getTransitElement().getLineName());
 
-        String line = route.getRouteElements().getElements().get(0).getTransitElement().getLineName();
-        routeInfo.setLine(line);
+        routeInfo.setLines(lines);
 
-
+        routeInfo.show(true);
     }
 }

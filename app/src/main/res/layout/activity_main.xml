@@ -207,7 +207,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/mapfragment"
         android:layout_marginTop="-10dp"
-        android:layout_marginBottom="-150dp"
+        android:layout_marginBottom="0dp"
         android:background="@drawable/inverse_background"
         android:orientation="vertical"
         android:paddingLeft="20dp"
@@ -216,14 +216,27 @@
         android:paddingBottom="20dp"
         android:visibility="visible">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_directions_bus_black_24dp"
-            android:drawablePadding="10dp"
-            android:fontFamily="@font/abeezee"
-            android:padding="5dp"
-            android:text="Estimación de la ruta" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_directions_bus_black_24dp"
+                android:drawablePadding="10dp"
+                android:fontFamily="@font/abeezee"
+                android:padding="5dp"
+                android:text="Estimación de la ruta" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
