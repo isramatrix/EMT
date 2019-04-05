@@ -119,6 +119,17 @@ public class SearchHeader extends LinearLayout {
 
     public void inflateAutoCompleteDestination(Map<String, GeoCoordinate> locations)
     {
+        this.locations = locations;
+        inflateAutoComplete(locations, destination);
+    }
+    public void inflateAutoCompleteOrigins(Map<String, GeoCoordinate> locations)
+    {
+
+        this.origins = locations;
+        inflateAutoComplete(locations, origin);
+    }
+
+    private void inflateAutoComplete(Map<String, GeoCoordinate> locations, final AutoCompleteTextView textView){
         Location actualL = LocationService.getInstance(null).getActualLocation();
         if(actualL == null) {
             actualL = new Location("");
@@ -128,39 +139,28 @@ public class SearchHeader extends LinearLayout {
         GeoCoordinate actualC = new GeoCoordinate(actualL.getLatitude(), actualL.getLongitude());
         List<String> list = new LinkedList<String>();
         for(String temp : locations.keySet()){
-            if (locations.get(temp).distanceTo(actualC) < 40000)
+            double distance = locations.get(temp).distanceTo(actualC);
+            if (distance < 40000) {
+                temp = temp.split(",")[0];
                 list.add(temp);
+            }
         }
 
         Looper.prepare();
 
-        this.locations = locations;
-
         String[] locationArray = list.toArray(new String[list.size()]);
-        System.out.println(locationArray.toString());
-        String[] am = new String[]{"Aragon"};
-        final ArrayAdapter<String> test = new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_list_item_1, am);
-        destination.setThreshold(1);
+        System.out.println(list.toString());
+        //String[] am = new String[]{"Aragon"};
+        final ArrayAdapter<String> test = new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_list_item_1, locationArray);
+        textView.setThreshold(2);
 
         post(new Runnable() {
             @Override
             public void run() {
-                destination.setAdapter(test);
-                System.out.println("HI");
+                textView.setAdapter(test);
+                test.notifyDataSetChanged();
             }
         });
-
-    }
-
-    public void inflateAutoCompleteOrigins(Map<String, GeoCoordinate> locations)
-    {
-        System.out.println(locations.keySet());
-        this.origins = locations;
-
-        System.out.println(locations.keySet());
-
-        // TODO: Inflate locations instead strings on autocomplete list.
-        //destination.setAdapter( new ArrayAdapter<>(getContext(), list));
     }
 
     public void visibilityHeader(final boolean visible)
