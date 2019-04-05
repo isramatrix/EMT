@@ -32,6 +32,7 @@ import com.here.android.mpa.routing.TransitRouteElement;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -45,6 +46,7 @@ public class MapController {
     private MapMarker marca;
     private MapMarker ubiPersona;
     private static Context context;
+    private static List<MapRoute> prevRoute;
 
     public MapController(Activity context) {
         this.context = context.getBaseContext();
@@ -96,7 +98,21 @@ public class MapController {
 
     public void addRoutes(List<Route> routes, RouteInfo routeInfo)
     {
-        for (Route r : routes) map.addMapObject(new MapRoute(r).setColor(Color.RED));
+        if(prevRoute != null){
+            //For each map route in previous route
+            for(MapRoute r :prevRoute){
+                //remove previous routes from map before coputing new
+                map.removeMapObject(r);
+            }
+        }
+        prevRoute = new LinkedList<MapRoute>();
+        for (Route r : routes) {
+            MapRoute current = new MapRoute(r).setColor(Color.RED);
+            prevRoute.add(current);
+            map.addMapObject(current);
+
+        }
+
         setRouteInfo(routes.get(0), routeInfo);
     }
 
