@@ -3,6 +3,7 @@ package com.emt.sostenible.view;
 import android.content.Context;
 import android.graphics.Point;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
@@ -10,13 +11,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.emt.sostenible.R;
+
 import java.util.Date;
+import java.util.Set;
 
 public class RouteInfo extends LinearLayout {
 
     private TextView departure;
 
     private TextView arrival;
+
+    private LinearLayout lines;
 
     public RouteInfo(Context context) {
         super(context);
@@ -44,7 +50,7 @@ public class RouteInfo extends LinearLayout {
         LinearLayout parent = (LinearLayout) getChildAt(1);
         departure = (TextView) ((LinearLayout) parent.getChildAt(0)).getChildAt(1);
         arrival = (TextView) ((LinearLayout) parent.getChildAt(2)).getChildAt(1);
-
+        lines = (LinearLayout) ((LinearLayout) getChildAt(0)).getChildAt(1);
     }
 
     public void setTimes(String departure, String arrival)
@@ -53,9 +59,19 @@ public class RouteInfo extends LinearLayout {
         this.arrival.setText(arrival);
     }
 
-    public void setLine(String line)
+    public void setLines(Set<String> lins)
     {
-        // TODO: Implement line show.
+        lines.removeAllViews();
+        LayoutParams layout = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layout.setMargins(10, 0, 10, 0);
+
+        for (String l : lins) {
+            System.out.println(l);
+            inflate(this.getContext(), R.layout.line_view, lines);
+            TextView lineText = (TextView) lines.getChildAt(lines.getChildCount()-1);
+            lineText.setLayoutParams(layout);
+            lineText.setText(l);
+        }
     }
 
     public void show(boolean visible)

@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -209,14 +210,15 @@ public class SearchHeader extends LinearLayout {
             @Override
             public void onClick(View v) {
 
-                System.out.println("ORIG - " + origins.size());
-                System.out.println("DEST - " + locations.size());
-
                 if (locations.size() == 0) return;
                 if (origins.size() == 0) return;
 
                 GeoCoordinate destine = (GeoCoordinate) locations.values().toArray()[0];
                 GeoCoordinate origens = (GeoCoordinate) origins.values().toArray()[0];
+
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (destination.isFocused()) imm.hideSoftInputFromWindow(destination.getWindowToken(), 0);
+                else if (origin.isFocused()) imm.hideSoftInputFromWindow(origin.getWindowToken(), 0);
 
                 if (destine != null) {
                     listener.onClick(destine, origens, searchType);
