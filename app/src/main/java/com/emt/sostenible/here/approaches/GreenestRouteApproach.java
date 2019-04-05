@@ -25,10 +25,6 @@ class GreenestRouteApproach extends RouteApproach {
     {
         RouteOptions routeOptions = new RouteOptions();
         routeOptions.setRouteCount(routes);
-        routeOptions.setPublicTransportTypeAllowed(TransitType.RAIL_METRO, false);
-        routeOptions.setPublicTransportTypeAllowed(TransitType.BUS_TOURISTIC, false);
-        routeOptions.setPublicTransportTypeAllowed(TransitType.RAIL_REGIONAL, false);
-        routeOptions.setPublicTransportTypeAllowed(TransitType.TRAIN_REGIONAL, false);
         return routeOptions;
     }
 
