@@ -25,6 +25,10 @@ class GreenestRouteApproach extends RouteApproach {
     {
         RouteOptions routeOptions = new RouteOptions();
         routeOptions.setRouteCount(routes);
+        routeOptions.setPublicTransportTypeAllowed(TransitType.RAIL_METRO, false);
+        routeOptions.setPublicTransportTypeAllowed(TransitType.BUS_TOURISTIC, false);
+        routeOptions.setPublicTransportTypeAllowed(TransitType.RAIL_REGIONAL, false);
+        routeOptions.setPublicTransportTypeAllowed(TransitType.TRAIN_REGIONAL, false);
         return routeOptions;
     }
 
@@ -37,7 +41,7 @@ class GreenestRouteApproach extends RouteApproach {
             ConsumptionParameters params = ConsumptionParameters.createDefaultConsumptionParameters();
             params.setAccelerationMultiplier(0.2);
             params.setDecelerationMultiplier(0.2);
-            params.setTurnTimeMultiplier(1.5);
+            //params.setTurnTimeMultiplier(1.5);
 
             DynamicPenalty dynamicPenalty = new DynamicPenalty();
             dynamicPenalty.setTrafficPenaltyMode(Route.TrafficPenaltyMode.AVOID_LONG_TERM_CLOSURES);
