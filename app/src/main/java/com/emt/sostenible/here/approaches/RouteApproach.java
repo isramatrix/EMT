@@ -36,6 +36,10 @@ public abstract class RouteApproach {
         routeOptions.setPublicTransportTypeAllowed(TransitType.BUS_TOURISTIC, false);
         routeOptions.setPublicTransportTypeAllowed(TransitType.RAIL_REGIONAL, false);
         routeOptions.setPublicTransportTypeAllowed(TransitType.TRAIN_REGIONAL, false);
+        routeOptions.setPublicTransportTypeAllowed(TransitType.MONORAIL, false);
+        routeOptions.setPublicTransportTypeAllowed(TransitType.RAIL_LIGHT, false);
+        routeOptions.setPublicTransportTypeAllowed(TransitType.UNKNOWN, false);
+
     }
 
     public void calculateRoute(RoutePlan routePlan, OnRouteCalculatedListener listener)
