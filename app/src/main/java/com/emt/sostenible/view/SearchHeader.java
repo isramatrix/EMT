@@ -142,7 +142,7 @@ public class SearchHeader extends LinearLayout {
             double distance = locations.get(temp).distanceTo(actualC);
             if (distance < 40000) {
                 temp = temp.split(",")[0];
-                list.add(temp);
+                if(!list.contains(temp)) list.add(temp);
             }
         }
 
