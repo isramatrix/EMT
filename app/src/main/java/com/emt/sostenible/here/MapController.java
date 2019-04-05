@@ -102,15 +102,22 @@ public class MapController {
             //For each map route in previous route
             for(MapRoute r :prevRoute){
                 //remove previous routes from map before coputing new
-                map.removeMapObject(r);
+                try{
+                    map.removeMapObject(r);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
             }
         }
         prevRoute = new LinkedList<MapRoute>();
         for (Route r : routes) {
             MapRoute current = new MapRoute(r).setColor(Color.RED);
             prevRoute.add(current);
-            map.addMapObject(current);
-
+        }
+        try {
+            map.addMapObject(prevRoute.get(0));
+        }catch(Exception e){
+            e.printStackTrace();
         }
 
         setRouteInfo(routes.get(0), routeInfo);
@@ -228,11 +235,11 @@ public class MapController {
     {
         Calendar calendar = Calendar.getInstance();
 
-        String departure = String.format("%02d", calendar.get(Calendar.HOUR))
+        String departure = String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY))
                 + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
 
         calendar.add(Calendar.SECOND, route.getTtaIncludingTraffic(Route.WHOLE_ROUTE).getDuration());
-        String arrival = String.format("%02d", calendar.get(Calendar.HOUR))
+        String arrival = String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY))
                 + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
         routeInfo.setTimes(departure, arrival);
 
