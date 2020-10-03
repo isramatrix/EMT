@@ -115,11 +115,15 @@ public class DataFetcher {
         return load(8);
     }
 
-    public boolean loadEstations(){
+    public interface OnLoaded {
+        void load(Estation[] estations);
+    }
+
+    public boolean loadEstations(final OnLoaded onLoaded){
         obtenerDatosVolley(new OnDataArrived<Estation[]>() {
             @Override
             public void callback(Estation[] data) {
-                estations = data;
+                onLoaded.load(estations = data);
             }
         });
         return true;

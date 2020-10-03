@@ -18,6 +18,7 @@ import com.android.volley.toolbox.Volley;
 
 import com.emt.sostenible.R;
 import com.emt.sostenible.data.DataFetcher;
+import com.emt.sostenible.data.Estation;
 import com.emt.sostenible.here.EMTRoutePlanner;
 import com.emt.sostenible.here.MapController;
 import com.emt.sostenible.here.geocoder.String2GeoParser;
@@ -55,7 +56,6 @@ public class BasicMapActivity extends Activity {
         searchHeader.setOnSearchButtonClicked(searchRouteTo());
         searchHeader.setOnDestinationChanged(destinationTextChangedListener());
         searchHeader.setOnOriginChanged(originTextChangedListener());
-
     }
 
     /**
@@ -67,13 +67,9 @@ public class BasicMapActivity extends Activity {
             Location location = locationService.getActualLocation();
 
             if (location != null) {
-
                 map.setCenter(location);
                 map.addPersona(location);
-
             }
-            DataFetcher.getEstations();
-
         }
     }
 

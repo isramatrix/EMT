@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import com.emt.sostenible.R;
 import com.emt.sostenible.data.DataFetcher;
+import com.emt.sostenible.data.Estation;
 import com.emt.sostenible.data.Stop;
 import com.emt.sostenible.here.geocoder.String2GeoParser;
 import com.emt.sostenible.view.RouteInfo;
@@ -71,7 +72,14 @@ public class MapController {
                         // Set the zoom level to the average between min and max
                         map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 1.5);
                         map.setMapScheme(Map.Scheme.NORMAL_DAY);
-                        initializeStops();
+                        initializeStops(new DataFetcher.OnLoaded() {
+                            @Override
+                            public void load(Estation[] estations) {
+                                for (Estation e : estations) if (e != null) addEstacion(Double.parseDouble(e.getLon()), Double.parseDouble(e.getName()));
+
+                            }
+                        });
+
 
                     } else {
                         System.out.println("ERROR: Cannot initialize Map Fragment");
@@ -130,8 +138,11 @@ public class MapController {
         } catch (Exception e) {
             System.out.print("NOT FOUND IMAGE");
         }
+    }
 
-
+    public void addEstacion(double lat, double lon)
+    {
+        map.addMapObject(new MapMarker(new GeoCoordinate(lat, lon)));
     }
 
     public MapMarker createParada(double lat, double longi) {
@@ -191,7 +202,7 @@ public class MapController {
         return paradas;
     }
 
-    private void initializeStops(){
+    private void initializeStops(DataFetcher.OnLoaded onLoaded){
         try {
             DataFetcher temp = DataFetcher.getDataFetcher(MapController.context);
             temp.loadStops();
@@ -201,7 +212,7 @@ public class MapController {
             e.printStackTrace();
         }
         try{
-            DataFetcher.getDataFetcher().loadEstations();
+            DataFetcher.getDataFetcher().loadEstations(onLoaded);
             //DataFetcher.getEstations();
         } catch (Exception e) {
             e.printStackTrace();
