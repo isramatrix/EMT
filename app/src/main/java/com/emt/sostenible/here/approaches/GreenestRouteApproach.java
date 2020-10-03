@@ -35,8 +35,8 @@ class GreenestRouteApproach extends RouteApproach {
             Route r;
             routeList.add(r = routeResult.get(i).getRoute());
             ConsumptionParameters params = ConsumptionParameters.createDefaultConsumptionParameters();
-            params.setAccelerationMultiplier(0.2);
-            params.setDecelerationMultiplier(0.2);
+            params.setAccelerationMultiplier(0.1);
+            params.setDecelerationMultiplier(0.1);
             params.setTurnTimeMultiplier(1.5);
 
             DynamicPenalty dynamicPenalty = new DynamicPenalty();
